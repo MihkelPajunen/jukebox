@@ -1,6 +1,6 @@
 <template>
   <AppNavbar />
-  <div class="container is-max-desktop">
+  <div id="content" class="container is-max-desktop">
     <RouterView />
   </div>
 </template>
@@ -11,4 +11,12 @@ import AppNavbar from '@/components/AppNavbar.vue';
 
 <style lang="sass">
 @import 'bulma/bulma'
+
+#content
+  padding-top: 0.5rem
+  padding-bottom: 0.5rem
+
+  @include until($desktop)
+    padding-left: 0.75rem
+    padding-right: 0.75rem
 </style>
