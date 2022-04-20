@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^8.2.6",
+    "axios": "^0.26.1",
     "bulma": "^0.9.3",
     "pinia": "^2.0.13",
     "vue": "^3.2.31",

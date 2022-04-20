@@ -14,12 +14,13 @@ initializeApp({
 const db = getFirestore();
 
 router.get('/', async (_request, response) => {
+  response.set('Access-Control-Allow-Origin', '*');
   const artists = [];
 
   const snapshot = await db.collection('artists').get();
   snapshot.forEach((document) => artists.push(document.data()));
 
-  response.status(200).json({ success: true, data: artists });
+  response.status(200).json({ success: true, artists });
 });
 
 module.exports = router;
