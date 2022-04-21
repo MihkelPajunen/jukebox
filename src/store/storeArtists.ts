@@ -9,6 +9,11 @@ export const useStoreArtists = defineStore('storeArtists', {
       artists: [] as Artist[]
     };
   },
+  getters: {
+    isEmpty(state) {
+      return state.artists.length < 1;
+    }
+  },
   actions: {
     async downloadArtists() {
       try {
@@ -16,8 +21,8 @@ export const useStoreArtists = defineStore('storeArtists', {
           `${import.meta.env.VITE_APP_API}/artists`
         );
         this.artists = response.data.artists;
-      } catch (error) {
-        console.log(error);
+      } catch {
+        throw 'Could not download any artist data.';
       }
     }
   }
