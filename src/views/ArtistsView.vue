@@ -14,7 +14,6 @@
         <!-- insert (n - 1) empty columns to push content to the left -->
         <div class="column is-12-mobile"></div>
         <div class="column is-12-mobile"></div>
-        <div class="column is-12-mobile"></div>
       </template>
     </div>
   </div>
