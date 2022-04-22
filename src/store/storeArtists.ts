@@ -22,7 +22,7 @@ export const useStoreArtists = defineStore('storeArtists', {
         );
         this.artists = response.data.artists;
       } catch {
-        throw 'Could not download any artist data.';
+        throw new Error('Could not download any artist data.');
       }
     }
   }

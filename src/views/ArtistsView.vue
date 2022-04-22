@@ -18,6 +18,8 @@
 import { ref, onMounted } from 'vue';
 import { useStoreArtists } from '@/store/storeArtists';
 
+import { getErrorMessage } from '@/utils/functions';
+
 import AppLoader from '@/components/AppLoader.vue';
 
 const isLoading = ref(true);
@@ -34,7 +36,7 @@ onMounted(async () => {
     await storeArtists.downloadArtists();
   } catch (error) {
     notification.value.type = 'is-danger';
-    notification.value.message = String(error);
+    notification.value.message = getErrorMessage(error);
   }
 
   isLoading.value = false;
