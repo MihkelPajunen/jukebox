@@ -7,11 +7,9 @@
 
 div
   height: calc(100vh - 52px)
-
   &.is-loading
     position: relative
     pointer-events: nones
-
     &:after
       @include loader
       position: absolute

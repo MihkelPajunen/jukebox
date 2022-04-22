@@ -13,8 +13,8 @@ import AppNavbar from '@/components/AppNavbar.vue';
 @import 'bulma/bulma'
 
 #content
-  padding-top: 0.5rem
-  padding-bottom: 0.5rem
+  padding-top: 0.75rem
+  padding-bottom: 0.75rem
 
   @include until($desktop)
     padding-left: 0.75rem
