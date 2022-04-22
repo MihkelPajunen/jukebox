@@ -13,9 +13,9 @@ import AppNavbar from '@/components/AppNavbar.vue';
 @import 'bulma/bulma'
 
 #content
+  min-height: calc(100vh - $navbar-height)
   padding-top: 0.75rem
   padding-bottom: 0.75rem
-
   @include until($desktop)
     padding-left: 0.75rem
     padding-right: 0.75rem
