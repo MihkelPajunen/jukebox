@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" data-aos="fade-left">
     <div class="card-image">
       <AppImage :image-url="imageUrl" />
     </div>
