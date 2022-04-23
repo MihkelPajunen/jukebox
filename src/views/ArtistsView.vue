@@ -22,7 +22,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useStoreArtists } from '@/store/storeArtists';
-
 import { getErrorMessage } from '@/utils/functions';
 
 import AppLoader from '@/components/AppLoader.vue';
