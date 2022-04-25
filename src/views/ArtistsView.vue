@@ -9,7 +9,12 @@
       </div>
       <template v-else>
         <div v-for="artist in storeArtists.artists" :key="artist.id" class="column is-12-mobile">
-          <AppCard :name="artist.name" :image-url="artist.imageUrl" />
+          <AppCard
+            :id="artist.id"
+            :name="artist.name"
+            :image-url="artist.imageUrl"
+            :route="'artist'"
+          />
         </div>
         <!-- insert (n - 1) empty columns to push content to the left -->
         <div class="column is-12-mobile"></div>

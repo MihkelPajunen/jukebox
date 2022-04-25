@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import ArtistsView from '../views/ArtistsView.vue';
+import ArtistView from '../views/ArtistView.vue';
 import TracksView from '../views/TracksView.vue';
 
 const router = createRouter({
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/artists',
       name: 'artists',
       component: ArtistsView
+    },
+    {
+      path: '/artists/:id',
+      name: 'artist',
+      component: ArtistView
     },
     {
       path: '/tracks',
