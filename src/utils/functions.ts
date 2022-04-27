@@ -1,3 +1,7 @@
+function hasProperty(object: unknown, property: string): boolean {
+  return Object(object)[property] !== undefined;
+}
+
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) {
     return error.message;
@@ -21,4 +25,4 @@ function truncateString(string: string, maxLength: number) {
   return string.substring(0, lastIndex) + '...';
 }
 
-export { getErrorMessage, truncateString };
+export { hasProperty, getErrorMessage, truncateString };
