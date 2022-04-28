@@ -1,4 +1,4 @@
-function hasProperty(object: unknown, property: string): boolean {
+function hasProperty(object: unknown, property: string) {
   return Object(object)[property] !== undefined;
 }
 

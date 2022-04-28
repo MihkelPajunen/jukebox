@@ -23,6 +23,7 @@ import { getErrorMessage } from '@/utils/functions';
 import AppLoader from '@/components/AppLoader.vue';
 
 import type { Artist } from '@/types/Artist';
+import type { RouteLocationNormalizedLoaded } from 'vue-router';
 
 const isLoading = ref(true);
 
@@ -35,15 +36,15 @@ const artist = ref<Artist | undefined>(undefined);
 
 const storeArtists = useStoreArtists();
 
-const route = useRoute();
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } };
 
 onMounted(async () => {
-  artist.value = storeArtists.getArtist(route.params.id as string);
+  artist.value = storeArtists.getArtist(route.params.id);
 
   if (!artist.value) {
     try {
-      await storeArtists.downloadArtist(route.params.id as string);
-      artist.value = storeArtists.getArtist(route.params.id as string);
+      await storeArtists.downloadArtist(route.params.id);
+      artist.value = storeArtists.getArtist(route.params.id);
     } catch (error) {
       notification.value.type = 'is-danger';
       notification.value.message = getErrorMessage(error);
