@@ -72,7 +72,8 @@ onMounted(async () => {
 @import 'bulma/bulma'
 
 .is-12-mobile
-  max-width: 328px
+  max-width: 448px
   @include from($tablet)
     min-width: 328px
+    max-width: 328px
 </style>
