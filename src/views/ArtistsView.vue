@@ -4,7 +4,7 @@
     <div v-else class="columns is-centered is-mobile is-multiline">
       <div v-if="storeArtists.isEmpty" class="column is-narrow">
         <div :class="['notification has-text-centered', notification.type, 'p-4']">
-          {{ notification.message }}
+          <p>{{ notification.message }}</p>
         </div>
       </div>
       <template v-else>
@@ -54,8 +54,7 @@ onMounted(async () => {
 @import 'bulma/bulma'
 
 .is-12-mobile
-  max-width: 448px
+  max-width: 328px
   @include from($tablet)
     min-width: 328px
-    max-width: 328px
 </style>

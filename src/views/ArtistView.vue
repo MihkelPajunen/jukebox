@@ -4,21 +4,25 @@
     <div v-else class="columns is-centered is-mobile is-multiline" data-aos="fade-left">
       <div v-if="!artist" class="column is-narrow">
         <div :class="['notification has-text-centered', notification.type, 'p-4']">
-          {{ notification.message }}
+          <p>{{ notification.message }}</p>
         </div>
       </div>
       <template v-else>
         <div class="column is-12-mobile">
           <AppImage :imageUrl="artist.imageUrl" />
         </div>
-        <div class="column is-12-mobile">
+        <div class="column is-12-mobile is-flex is-flex-direction-column">
           <h1 class="title is-size-2 mb-4">{{ artist.name }}</h1>
           <h2 class="title is-size-6 mb-2">Members</h2>
-          <ul class="mb-2">
-            <li v-for="member in artist.members" :key="member">
+          <ul class="mb-4">
+            <li v-for="member in artist.members.slice(0, 4)" :key="member">
               <p>{{ member }}</p>
             </li>
           </ul>
+          <button class="button is-info mt-auto">
+            <FontAwesome class="mr-2" icon="play" />
+            Listen to their music
+          </button>
         </div>
       </template>
     </div>
@@ -74,6 +78,5 @@ onMounted(async () => {
 .is-12-mobile
   max-width: 448px
   @include from($tablet)
-    min-width: 328px
     max-width: 328px
 </style>
