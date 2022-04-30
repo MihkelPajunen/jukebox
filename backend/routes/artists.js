@@ -2,16 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { initializeApp, cert } = require('firebase-admin/app');
-const { getFirestore } = require('firebase-admin/firestore');
-
-const serviceAccount = require('../serviceAccountKey.json');
-
-initializeApp({
-  credential: cert(serviceAccount)
-});
-
-const db = getFirestore();
+const db = require('../firebase');
 
 router.get('/', async (_request, response) => {
   response.set('Access-Control-Allow-Origin', '*');

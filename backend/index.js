@@ -9,6 +9,9 @@ dotenv.config();
 const artists = require('./routes/artists');
 app.use('/artists', artists);
 
+const tracks = require('./routes/tracks');
+app.use('/tracks', tracks);
+
 app.listen(process.env.PORT || port, () => {
   console.log(`Express app listening on http://localhost:${process.env.PORT || port}`);
 });
