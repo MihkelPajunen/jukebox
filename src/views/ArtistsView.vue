@@ -10,7 +10,7 @@
       <template v-else>
         <div v-for="artist in storeArtists.artists" :key="artist.id" class="column is-12-mobile">
           <RouterLink :to="{ name: 'artist', params: { id: artist.id } }">
-            <AppCard :id="artist.id" :name="artist.name" :image-url="artist.imageUrl" />
+            <AppCard :id="artist.id" :text="artist.name" :image-url="artist.imageUrl" />
           </RouterLink>
         </div>
         <!-- insert (n - 1) empty columns to push content to the left -->

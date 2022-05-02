@@ -5,7 +5,7 @@
     </div>
     <div class="card-content has-background-dark">
       <p class="title is-size-6 has-text-centered has-text-white">
-        {{ truncateString(name, 30) }}
+        {{ truncateString(text, 30) }}
       </p>
     </div>
   </div>
@@ -17,7 +17,7 @@ import { truncateString } from '@/utils/functions';
 import AppImage from './AppImage.vue';
 
 defineProps({
-  name: {
+  text: {
     type: String,
     required: true
   },
