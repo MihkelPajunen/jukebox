@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { hasProperty } from '@/utils/functions';
 
 import type { Artist } from '@/types/Artist';
+import type { Unreliable } from '@/types/Unreliable';
 
 export const useStoreArtists = defineStore('storeArtists', {
   state: () => {
@@ -26,7 +26,7 @@ export const useStoreArtists = defineStore('storeArtists', {
         );
         this.artists = response.data.artists;
       } catch (error) {
-        if (!hasProperty(error, 'response')) {
+        if ((<Unreliable<{ response: unknown }>>error)?.response === undefined) {
           throw new Error('Could not download any artist data.');
         }
       }
@@ -39,7 +39,7 @@ export const useStoreArtists = defineStore('storeArtists', {
 
         response.data.success && this.artists.push(response.data.artist);
       } catch (error) {
-        if (!hasProperty(error, 'response')) {
+        if ((<Unreliable<{ response: unknown }>>error)?.response === undefined) {
           throw new Error('Could not download any artist data.');
         }
       }

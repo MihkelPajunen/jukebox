@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { hasProperty } from '@/utils/functions';
 
 import type { Track } from '@/types/Track';
+import type { Unreliable } from '@/types/Unreliable';
 
 export const useStoreTracks = defineStore('storeTracks', {
   state: () => {
@@ -26,7 +26,7 @@ export const useStoreTracks = defineStore('storeTracks', {
         );
         this.tracks = response.data.tracks;
       } catch (error) {
-        if (!hasProperty(error, 'response')) {
+        if ((<Unreliable<{ response: unknown }>>error)?.response === undefined) {
           throw new Error('Could not download any track data.');
         }
       }
@@ -39,7 +39,7 @@ export const useStoreTracks = defineStore('storeTracks', {
 
         response.data.success && this.tracks.push(response.data.track);
       } catch (error) {
-        if (!hasProperty(error, 'response')) {
+        if ((<Unreliable<{ response: unknown }>>error)?.response === undefined) {
           throw new Error('Could not download any track data.');
         }
       }
