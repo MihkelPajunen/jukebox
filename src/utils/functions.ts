@@ -18,7 +18,7 @@ function truncateString(string: string, maxLength: number) {
     lastIndex--;
   }
 
-  return string.substring(0, lastIndex) + '...';
+  return string.substring(0, lastIndex).trim() + '...';
 }
 
 export { getErrorMessage, truncateString };
