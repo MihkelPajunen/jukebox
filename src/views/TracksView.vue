@@ -12,7 +12,7 @@
           <RouterLink :to="{ name: 'track', params: { id: track.id } }">
             <AppCard
               :id="track.id"
-              :text="`${getName(track.artist)} - ${track.title}`"
+              :text="`${getArtistName(track.artist)} - ${track.title}`"
               :image-url="track.imageUrl"
             />
           </RouterLink>
@@ -44,7 +44,7 @@ const notification = ref({
 const storeTracks = useStoreTracks();
 const storeArtists = useStoreArtists();
 
-const getName = (id: string) => {
+const getArtistName = (id: string) => {
   return storeArtists.getArtist(id)?.name || 'Unknown';
 };
 

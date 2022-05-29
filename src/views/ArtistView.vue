@@ -8,10 +8,14 @@
         </div>
       </div>
       <template v-else>
-        <div class="column is-12-mobile">
-          <AppImage :imageUrl="artist.imageUrl" />
-        </div>
         <div class="column is-12-mobile is-flex is-flex-direction-column">
+          <AppImage :imageUrl="artist.imageUrl" />
+          <button class="button is-info mt-3">
+            <FontAwesome class="mr-2" icon="play" />
+            Listen to their music
+          </button>
+        </div>
+        <div class="column is-12-mobile">
           <h1 class="title is-size-2 mb-4">{{ artist.name }}</h1>
           <h2 class="title is-size-6 mb-2">Members</h2>
           <ul class="mb-4">
@@ -19,10 +23,6 @@
               <p>{{ member }}</p>
             </li>
           </ul>
-          <button class="button is-info mt-auto">
-            <FontAwesome class="mr-2" icon="play" />
-            Listen to their music
-          </button>
         </div>
       </template>
     </div>
@@ -36,7 +36,6 @@ import { useRoute } from 'vue-router';
 import { getErrorMessage } from '@/utils/functions';
 
 import AppLoader from '@/components/AppLoader.vue';
-
 import AppImage from '@/components/AppImage.vue';
 
 import type { Artist } from '@/types/Artist';
