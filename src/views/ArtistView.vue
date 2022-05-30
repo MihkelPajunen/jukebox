@@ -10,7 +10,7 @@
       <template v-else>
         <div class="column is-12-mobile is-flex is-flex-direction-column">
           <AppImage :imageUrl="artist.imageUrl" />
-          <button class="button is-info mt-3">
+          <button v-if="tracks.length > 0" @click="viewRandomTrack" class="button is-info mt-3">
             <FontAwesome class="mr-2" icon="play" />
             Listen to their music
           </button>
@@ -32,13 +32,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useStoreArtists } from '@/store/storeArtists';
-import { useRoute } from 'vue-router';
+import { useStoreTracks } from '@/store/storeTracks';
+import { useRoute, useRouter } from 'vue-router';
 import { getErrorMessage } from '@/utils/functions';
 
 import AppLoader from '@/components/AppLoader.vue';
 import AppImage from '@/components/AppImage.vue';
 
 import type { Artist } from '@/types/Artist';
+import type { Track } from '@/types/Track';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 
 const isLoading = ref(true);
@@ -49,10 +51,18 @@ const notification = ref({
 });
 
 const artist = ref<Artist | undefined>(undefined);
+const tracks = ref<Track[]>([]);
 
 const storeArtists = useStoreArtists();
+const storeTracks = useStoreTracks();
 
+const router = useRouter();
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } };
+
+function viewRandomTrack() {
+  const index = Math.floor(Math.random() * tracks.value.length);
+  router.push({ path: `/tracks/${tracks.value[index].id}` });
+}
 
 onMounted(async () => {
   artist.value = storeArtists.getArtist(route.params.id);
@@ -65,6 +75,11 @@ onMounted(async () => {
       notification.value.type = 'is-danger';
       notification.value.message = getErrorMessage(error);
     }
+  }
+
+  if (artist.value?.id) {
+    await storeTracks.downloadTracksByArtist(artist.value.id);
+    tracks.value = storeTracks.getTracksByArtist(artist.value.id);
   }
 
   isLoading.value = false;
