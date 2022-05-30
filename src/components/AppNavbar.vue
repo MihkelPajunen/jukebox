@@ -27,15 +27,37 @@
             class="navbar-item"
             active-class="is-active"
             to="/artists"
-            >Artists</RouterLink
-          >
+            >Artists
+          </RouterLink>
+
           <RouterLink
             @click="isActive = false"
             class="navbar-item"
             active-class="is-active"
             to="/tracks"
-            >Tracks</RouterLink
-          >
+            >Tracks
+          </RouterLink>
+
+          <!-- upload link (desktop) -->
+          <div v-if="width > 1024" class="navbar-item">
+            <RouterLink
+              @click="isActive = false"
+              class="button"
+              active-class="is-active"
+              to="/upload"
+              ><FontAwesome class="mr-2" icon="upload" />Upload track
+            </RouterLink>
+          </div>
+
+          <!-- upload link (mobile) -->
+          <RouterLink
+            v-else
+            @click="isActive = false"
+            class="navbar-item"
+            active-class="is-active"
+            to="/upload"
+            >Upload track
+          </RouterLink>
         </div>
       </div>
     </div>
@@ -44,7 +66,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { onClickOutside } from '@vueuse/core';
+import { onClickOutside, useWindowSize } from '@vueuse/core';
 
 const title = import.meta.env.VITE_APP_TITLE;
 
@@ -64,4 +86,6 @@ onClickOutside(
   },
   { ignore: [navbarBurger] }
 );
+
+const { width } = useWindowSize();
 </script>

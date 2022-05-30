@@ -43,7 +43,7 @@ router.get('/:id/tracks', async (request, response) => {
     return response.status(404).json({ success: false, tracks });
   }
 
-  response.status(200).json({ success: true, tracks: tracks });
+  response.status(200).json({ success: true, tracks });
 });
 
 module.exports = router;

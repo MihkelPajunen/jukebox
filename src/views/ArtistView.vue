@@ -11,8 +11,7 @@
         <div class="column is-12-mobile is-flex is-flex-direction-column">
           <AppImage :imageUrl="artist.imageUrl" />
           <button v-if="tracks.length > 0" @click="viewRandomTrack" class="button is-info mt-3">
-            <FontAwesome class="mr-2" icon="play" />
-            Listen to their music
+            <FontAwesome class="mr-2" icon="music" />Explore their music
           </button>
         </div>
         <div class="column is-12-mobile">
