@@ -37,7 +37,8 @@ export const useStoreArtists = defineStore('storeArtists', {
           `${import.meta.env.VITE_APP_API}/artists/${id}`
         );
 
-        response.data.success && this.artists.push(response.data.artist);
+        const availableArtists = new Set(this.artists.map((artist) => artist.id));
+        !availableArtists.has(response.data.artist.id) && this.artists.push(response.data.artist);
       } catch (error) {
         if ((<Unreliable<{ response: unknown }>>error)?.response === undefined) {
           throw new Error('Could not download any artist data.');

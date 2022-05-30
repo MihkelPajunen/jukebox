@@ -40,7 +40,8 @@ export const useStoreTracks = defineStore('storeTracks', {
           `${import.meta.env.VITE_APP_API}/tracks/${id}`
         );
 
-        response.data.success && this.tracks.push(response.data.track);
+        const availableTracks = new Set(this.tracks.map((track) => track.id));
+        !availableTracks.has(response.data.track.id) && this.tracks.push(response.data.track);
       } catch (error) {
         if ((<Unreliable<{ response: unknown }>>error)?.response === undefined) {
           throw new Error('Could not download any track data.');
@@ -52,7 +53,13 @@ export const useStoreTracks = defineStore('storeTracks', {
         const response = await axios.get<{ success: boolean; tracks: Track[] }>(
           `${import.meta.env.VITE_APP_API}/artists/${id}/tracks`
         );
-        this.tracks = response.data.tracks;
+
+        const availableTracks = new Set(this.tracks.map((track) => track.id));
+
+        this.tracks = [
+          ...this.tracks,
+          ...response.data.tracks.filter((track) => !availableTracks.has(track.id))
+        ];
       } catch (error) {
         if ((<Unreliable<{ response: unknown }>>error)?.response === undefined) {
           throw new Error('Could not download any track data.');
