@@ -81,6 +81,14 @@ onMounted(async () => {
     tracks.value = storeTracks.getTracksByArtist(artist.value.id);
   }
 
+  if (!artist.value) {
+    document.title = `${import.meta.env.VITE_APP_TITLE} | There is no artist data to be found`;
+  }
+
+  if (artist.value) {
+    document.title = `${import.meta.env.VITE_APP_TITLE} | ${artist.value.name}`;
+  }
+
   isLoading.value = false;
 });
 </script>

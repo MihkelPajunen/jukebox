@@ -72,6 +72,15 @@ onMounted(async () => {
     }
   }
 
+  if (!track.value) {
+    document.title = `${import.meta.env.VITE_APP_TITLE} | There is no track data to be found`;
+  }
+
+  if (track.value && getArtistName(track.value.artist)) {
+    document.title = `${import.meta.env.VITE_APP_TITLE}\
+    | ${getArtistName(track.value.artist)} - ${track.value.title}`;
+  }
+
   isLoading.value = false;
 });
 </script>
