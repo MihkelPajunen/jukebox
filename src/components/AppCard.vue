@@ -5,7 +5,7 @@
     </div>
     <div class="card-content has-background-dark">
       <p class="title is-size-6 has-text-centered has-text-white">
-        {{ truncateString(text, 30) }}
+        {{ truncateString(text, 32) }}
       </p>
     </div>
   </div>

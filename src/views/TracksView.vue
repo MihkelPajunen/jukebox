@@ -20,6 +20,7 @@
         <!-- insert (n - 1) empty columns to push content to the left -->
         <div class="column is-12-mobile"></div>
         <div class="column is-12-mobile"></div>
+        <div class="column is-12-mobile"></div>
       </template>
     </div>
   </div>
@@ -65,7 +66,7 @@ onMounted(async () => {
 @import 'bulma/bulma'
 
 .is-12-mobile
-  max-width: 328px
+  max-width: 372.5px
   @include from($tablet)
-    min-width: 328px
+    min-width: 372.5px
 </style>

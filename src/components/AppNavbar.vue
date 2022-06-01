@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
-    <div class="container is-max-desktop">
+    <div class="container is-fullhd">
       <div class="navbar-brand">
         <RouterLink class="navbar-item" to="/">
           <strong class="is-size-4">{{ title }}</strong>
@@ -38,18 +38,12 @@
             >Tracks
           </RouterLink>
 
-          <!-- upload link (desktop) -->
-          <div v-if="width > 1024" class="navbar-item">
-            <RouterLink
-              @click="isActive = false"
-              class="button"
-              active-class="is-active"
-              to="/upload"
-              ><FontAwesome class="mr-2" icon="upload" />Upload track
+          <div v-if="width > 768" class="navbar-item">
+            <RouterLink class="button" active-class="is-active" to="/upload">
+              <FontAwesome class="mr-2" icon="upload" />Upload track
             </RouterLink>
           </div>
 
-          <!-- upload link (mobile) -->
           <RouterLink
             v-else
             @click="isActive = false"
@@ -89,3 +83,12 @@ onClickOutside(
 
 const { width } = useWindowSize();
 </script>
+
+<style lang="sass">
+@import 'bulma/bulma'
+
+.container
+  @include from(769px)
+    padding-left: 1.5rem
+    padding-right: 1.5rem
+</style>

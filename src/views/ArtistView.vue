@@ -10,7 +10,7 @@
       <template v-else>
         <div class="column is-12-mobile is-flex is-flex-direction-column">
           <AppImage :imageUrl="artist.imageUrl" />
-          <button v-if="tracks.length > 0" @click="viewRandomTrack" class="button is-info mt-3">
+          <button v-if="tracks.length > 0" @click="viewRandomTrack" class="button is-info mt-2">
             <FontAwesome class="mr-2" icon="music" />Explore their music
           </button>
         </div>
@@ -97,7 +97,7 @@ onMounted(async () => {
 @import 'bulma/bulma'
 
 .is-12-mobile
-  max-width: 448px
+  max-width: 426px
   @include from($tablet)
-    max-width: 328px
+    max-width: 372px
 </style>
