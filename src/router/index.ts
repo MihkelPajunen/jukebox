@@ -6,6 +6,7 @@ import ArtistsView from '../views/ArtistsView.vue';
 import ArtistView from '../views/ArtistView.vue';
 import TracksView from '../views/TracksView.vue';
 import TrackView from '../views/TrackView.vue';
+import UploadView from '../views/UploadView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,12 @@ const router = createRouter({
       path: '/tracks/:id',
       name: 'track',
       component: TrackView
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: UploadView,
+      meta: { title: 'Upload' }
     }
   ]
 });
