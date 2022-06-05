@@ -1,6 +1,6 @@
 <template>
   <div class="upload" data-aos="fade-up">
-    <form>
+    <form @submit.prevent="submit">
       <div class="box mx-auto">
         <div class="level">
           <div class="level-item">
@@ -83,6 +83,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useStoreNotifications } from '@/store/storeNotifications';
 
 const data = ref({
   artist: undefined,
@@ -97,6 +98,10 @@ const attachFile = (event: Event) => {
   const target = event.target as HTMLInputElement;
   data.value.file = (target.files as FileList)[0];
 };
+
+const storeNotifications = useStoreNotifications();
+
+const submit = () => storeNotifications.add('is-success', 'Form data was submitted.');
 </script>
 
 <style scoped lang="sass">

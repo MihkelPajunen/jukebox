@@ -3,10 +3,12 @@
   <div id="content" class="container is-fullhd p-5">
     <RouterView />
   </div>
+  <AppNotifications />
 </template>
 
 <script setup lang="ts">
 import AppNavbar from '@/components/AppNavbar.vue';
+import AppNotifications from '@/components/AppNotifications.vue';
 </script>
 
 <style lang="sass">

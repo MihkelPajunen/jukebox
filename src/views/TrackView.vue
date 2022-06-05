@@ -52,9 +52,7 @@ const track = ref<Track | undefined>(undefined);
 const storeTracks = useStoreTracks();
 const storeArtists = useStoreArtists();
 
-const getArtistName = (id: string) => {
-  return storeArtists.getArtist(id)?.name || 'Unknown';
-};
+const getArtistName = (id: string) => storeArtists.getArtist(id)?.name || 'Unknown';
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } };
 

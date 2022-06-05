@@ -66,9 +66,7 @@ const title = import.meta.env.VITE_APP_TITLE;
 
 const isActive = ref(false);
 
-const toggleActive = () => {
-  isActive.value = !isActive.value;
-};
+const toggleActive = () => (isActive.value = !isActive.value);
 
 const navbarBurger = ref<HTMLAnchorElement>();
 const navbarMenu = ref<HTMLDivElement>();

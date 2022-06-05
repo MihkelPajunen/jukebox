@@ -58,10 +58,10 @@ const storeTracks = useStoreTracks();
 const router = useRouter();
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } };
 
-function viewRandomTrack() {
+const viewRandomTrack = () => {
   const index = Math.floor(Math.random() * tracks.value.length);
   router.push({ path: `/tracks/${tracks.value[index].id}` });
-}
+};
 
 onMounted(async () => {
   artist.value = storeArtists.getArtist(route.params.id);
