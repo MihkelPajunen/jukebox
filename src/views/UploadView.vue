@@ -134,7 +134,7 @@ const submitForm = () => {
     formData.append('artist', capitalize(form.value.artist || ''));
     formData.append('title', capitalize(form.value.title || ''));
     formData.append('album', capitalize(form.value.album || ''));
-    formData.append('file', form.value.file || '', uuidv4());
+    formData.append('file', form.value.file || '', `${uuidv4()}.flac`);
 
     isLoading.value = true;
     storeTracks.uploadTrack(formData);
