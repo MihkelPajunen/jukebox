@@ -1,6 +1,6 @@
 <template>
   <div class="upload" data-aos="fade-up">
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submitForm">
       <div class="box mx-auto">
         <div class="level">
           <div class="level-item">
@@ -11,7 +11,7 @@
           <label class="label" for="artist">Artist</label>
           <div class="control">
             <input
-              v-model.trim="data.artist"
+              v-model.trim="form.artist"
               id="artist"
               class="input"
               type="text"
@@ -24,7 +24,7 @@
           <label class="label" for="title">Title</label>
           <div class="control">
             <input
-              v-model.trim="data.title"
+              v-model.trim="form.title"
               id="title"
               class="input"
               type="text"
@@ -37,7 +37,7 @@
           <label class="label" for="album">Album</label>
           <div class="control">
             <input
-              v-model.trim="data.album"
+              v-model.trim="form.album"
               id="album"
               class="input"
               type="text"
@@ -72,7 +72,9 @@
         <div class="field">
           <div class="level">
             <div class="level-item">
-              <button class="button is-info" type="submit">Submit</button>
+              <button :class="['button', 'is-info', { 'is-loading': isLoading }]" type="submit">
+                Upload
+              </button>
             </div>
           </div>
         </div>
@@ -84,24 +86,61 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useStoreNotifications } from '@/store/storeNotifications';
+import { useStoreTracks } from '@/store/storeTracks';
+import { capitalize } from '@/utils/functions';
+import { v4 as uuidv4 } from 'uuid';
 
-const data = ref({
+import type { Form } from '@/types/Form';
+
+const form = ref<Form>({
   artist: undefined,
   title: undefined,
   album: undefined,
-  file: null as File | null
+  file: null
 });
 
-const fileName = computed(() => (data.value.file?.name ? data.value.file.name : ''));
+const storeNotifications = useStoreNotifications();
+const storeTracks = useStoreTracks();
+
+const fileName = computed(() => (form.value.file?.name ? form.value.file.name : ''));
 
 const attachFile = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  data.value.file = (target.files as FileList)[0];
+  form.value.file = (target.files as FileList)[0];
 };
 
-const storeNotifications = useStoreNotifications();
+const isLoading = ref(false);
 
-const submit = () => storeNotifications.add('is-success', 'Form data was submitted.');
+const formIsValid = () => {
+  for (const key of Object.keys(form.value)) {
+    if ([null, undefined, ''].some((element) => element === form.value[key as keyof Form])) {
+      return false;
+    }
+  }
+
+  if (form.value.file?.type && !['audio/flac', 'audio/x-flac'].includes(form.value.file.type)) {
+    storeNotifications.add('is-warning', 'Only FLAC files are supported.');
+    form.value.file = null;
+    return false;
+  }
+
+  return true;
+};
+
+const submitForm = () => {
+  if (formIsValid()) {
+    const formData = new FormData();
+
+    formData.append('artist', capitalize(form.value.artist || ''));
+    formData.append('title', capitalize(form.value.title || ''));
+    formData.append('album', capitalize(form.value.album || ''));
+    formData.append('file', form.value.file || '', uuidv4());
+
+    isLoading.value = true;
+    storeTracks.uploadTrack(formData);
+    storeNotifications.add('is-success', 'New file upload has started.');
+  }
+};
 </script>
 
 <style scoped lang="sass">

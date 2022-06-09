@@ -21,4 +21,8 @@ function truncateString(string: string, maxLength: number) {
   return string.substring(0, lastIndex).trim() + '...';
 }
 
-export { getErrorMessage, truncateString };
+function capitalize(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export { getErrorMessage, truncateString, capitalize };
