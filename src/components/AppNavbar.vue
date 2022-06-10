@@ -40,7 +40,7 @@
 
           <div v-if="width > 768" class="navbar-item">
             <RouterLink class="button" active-class="is-active" to="/upload">
-              <FontAwesome class="mr-2" icon="upload" />Upload track
+              <FontAwesome class="mr-2" icon="upload" />Upload
             </RouterLink>
           </div>
 
@@ -50,7 +50,7 @@
             class="navbar-item"
             active-class="is-active"
             to="/upload"
-            >Upload track
+            >Upload
           </RouterLink>
         </div>
       </div>
