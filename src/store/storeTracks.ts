@@ -65,9 +65,6 @@ export const useStoreTracks = defineStore('storeTracks', {
           throw new Error('Could not download any track data.');
         }
       }
-    },
-    uploadTrack(formData: FormData) {
-      // TODO
     }
   }
 });

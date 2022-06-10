@@ -1,10 +1,10 @@
 <template>
   <div class="upload" data-aos="fade-up">
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="uploadFile">
       <div class="box mx-auto">
         <div class="level">
           <div class="level-item">
-            <h1 class="title is-size-4">Upload track</h1>
+            <h1 class="title is-size-4">Upload</h1>
           </div>
         </div>
         <div class="field">
@@ -69,12 +69,12 @@
             </label>
           </div>
         </div>
+        <progress v-show="progress > 0" class="progress is-info" :value="progress" max="100" />
         <div class="field">
           <div class="level">
             <div class="level-item">
-              <button :class="['button', 'is-info', { 'is-loading': isLoading }]" type="submit">
-                Upload
-              </button>
+              <button v-if="progress === 0" class="button is-info" type="submit">Submit</button>
+              <button v-else @click="cancelUpload" class="button" type="submit">Cancel</button>
             </div>
           </div>
         </div>
@@ -86,9 +86,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useStoreNotifications } from '@/store/storeNotifications';
-import { useStoreTracks } from '@/store/storeTracks';
 import { capitalize } from '@/utils/functions';
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 import type { Form } from '@/types/Form';
 
@@ -99,9 +98,6 @@ const form = ref<Form>({
   file: null
 });
 
-const storeNotifications = useStoreNotifications();
-const storeTracks = useStoreTracks();
-
 const fileName = computed(() => (form.value.file?.name ? form.value.file.name : ''));
 
 const attachFile = (event: Event) => {
@@ -109,7 +105,7 @@ const attachFile = (event: Event) => {
   form.value.file = (target.files as FileList)[0];
 };
 
-const isLoading = ref(false);
+const storeNotifications = useStoreNotifications();
 
 const formIsValid = () => {
   for (const key of Object.keys(form.value)) {
@@ -127,19 +123,52 @@ const formIsValid = () => {
   return true;
 };
 
-const submitForm = () => {
+const clearForm = () => {
+  form.value.artist = undefined;
+  form.value.title = undefined;
+  form.value.album = undefined;
+  form.value.file = null;
+};
+
+const progress = ref(0);
+
+let controller: AbortController;
+
+const uploadFile = async () => {
   if (formIsValid()) {
     const formData = new FormData();
 
     formData.append('artist', capitalize(form.value.artist || ''));
     formData.append('title', capitalize(form.value.title || ''));
     formData.append('album', capitalize(form.value.album || ''));
-    formData.append('file', form.value.file || '', `${uuidv4()}.flac`);
+    formData.append('file', form.value.file || '');
 
-    isLoading.value = true;
-    storeTracks.uploadTrack(formData);
-    storeNotifications.add('is-success', 'New file upload has started.');
+    controller = new AbortController();
+
+    const config = {
+      signal: controller.signal,
+      onUploadProgress: (event: ProgressEvent) => {
+        progress.value = Math.round((event.loaded / event.total) * 100);
+      }
+    };
+
+    try {
+      await axios.post(`${import.meta.env.VITE_APP_API}/upload`, formData, config);
+      storeNotifications.add('is-success', 'Upload has completed.');
+      progress.value = 0;
+    } catch (error) {
+      // TODO
+    }
+
+    clearForm();
   }
+};
+
+const cancelUpload = () => {
+  controller.abort();
+  storeNotifications.add('is-warning', 'Upload was cancelled.');
+  progress.value = 0;
+  clearForm();
 };
 </script>
 
