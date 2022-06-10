@@ -5,8 +5,6 @@ const router = express.Router();
 const db = require('../firebase');
 
 router.get('/', async (_request, response) => {
-  response.set('Access-Control-Allow-Origin', '*');
-
   const tracks = [];
 
   const snapshot = await db.collection('tracks').get();
@@ -20,8 +18,6 @@ router.get('/', async (_request, response) => {
 });
 
 router.get('/:id', async (request, response) => {
-  response.set('Access-Control-Allow-Origin', '*');
-
   const snapshot = await db.collection('tracks').doc(request.params.id).get();
 
   if (!snapshot.data()) {

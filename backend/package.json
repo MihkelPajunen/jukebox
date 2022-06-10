@@ -9,8 +9,10 @@
   "author": "Mihkel Pajunen",
   "license": "ISC",
   "dependencies": {
+    "busboy": "^1.6.0",
     "express": "^4.17.3",
-    "firebase-admin": "^10.0.2"
+    "firebase-admin": "^10.0.2",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "dotenv": "^16.0.0",
