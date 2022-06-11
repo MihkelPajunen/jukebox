@@ -14,6 +14,7 @@
               v-model.trim="form.artist"
               id="artist"
               class="input"
+              ref="target"
               type="text"
               placeholder="Zero 7"
               required
@@ -46,7 +47,7 @@
             />
           </div>
         </div>
-        <div class="field">
+        <div :class="['field', { 'mb-5': progress === 0 }]">
           <label class="label" for="file">File</label>
           <div class="file has-name is-fullwidth">
             <label class="file-label">
@@ -69,12 +70,22 @@
             </label>
           </div>
         </div>
-        <progress v-show="progress > 0" class="progress is-info" :value="progress" max="100" />
+        <Transition name="fade">
+          <progress
+            v-show="progress > 0"
+            class="progress is-info mb-5"
+            :value="progress"
+            max="100"
+          />
+        </Transition>
         <div class="field">
           <div class="level">
             <div class="level-item">
               <button v-if="progress === 0" class="button is-info" type="submit">Submit</button>
-              <button v-else @click="cancelUpload" class="button" type="submit">Cancel</button>
+              <button v-else-if="progress === 100" @click="close" class="button" type="submit">
+                Close
+              </button>
+              <button v-else @click="cancel" class="button" type="submit">Cancel</button>
             </div>
           </div>
         </div>
@@ -85,6 +96,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useFocus } from '@vueuse/core';
 import { useStoreNotifications } from '@/store/storeNotifications';
 import { capitalize } from '@/utils/functions';
 import axios from 'axios';
@@ -97,6 +109,9 @@ const form = ref<Form>({
   album: undefined,
   file: null
 });
+
+const target = ref<HTMLInputElement>();
+useFocus(target, { initialValue: true });
 
 const fileName = computed(() => (form.value.file?.name ? form.value.file.name : ''));
 
@@ -155,18 +170,20 @@ const uploadFile = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_APP_API}/upload`, formData, config);
       storeNotifications.add('is-success', 'Upload has completed.');
-      progress.value = 0;
     } catch (error) {
       // TODO
     }
-
-    clearForm();
   }
 };
 
-const cancelUpload = () => {
+const cancel = () => {
   controller.abort();
   storeNotifications.add('is-warning', 'Upload was cancelled.');
+  progress.value = 0;
+  clearForm();
+};
+
+const close = () => {
   progress.value = 0;
   clearForm();
 };
@@ -175,4 +192,11 @@ const cancelUpload = () => {
 <style scoped lang="sass">
 .box
   max-width: 402px
+
+.fade-enter-active
+  transition: opacity 1s ease
+
+.fade-enter-from,
+.fade-leave-to
+  opacity: 0
 </style>
