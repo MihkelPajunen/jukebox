@@ -1,6 +1,6 @@
 export interface Form {
-  artist: undefined | string;
-  title: undefined | string;
-  album: undefined | string;
+  artist: string;
+  title: string;
+  album: string;
   file: null | File;
 }
