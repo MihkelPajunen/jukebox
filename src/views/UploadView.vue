@@ -99,7 +99,7 @@ const uploadFile = async () => {
       await axios.post(`${import.meta.env.VITE_APP_API}/upload`, formData, config);
       storeNotifications.add('is-success', 'Upload has completed.');
     } catch (error) {
-      // TODO
+      storeNotifications.add('is-danger', 'Upload was rejected.');
     }
   }
 };

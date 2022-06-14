@@ -21,7 +21,8 @@ router.post('/', (request, response) => {
 
     if (!['audio/flac', 'audio/x-flac'].includes(fileObject.mimeType)) {
       request.unpipe(bb);
-      response.status(415).json({ success: false });
+      response.writeHead(415, { Connection: 'close' });
+      response.end();
     }
 
     fileObject['filePath'] = path.join(os.tmpdir(), `${uuidv4()}.flac`);
@@ -39,7 +40,8 @@ router.post('/', (request, response) => {
 
   bb.on('error', () => {
     request.unpipe(bb);
-    response.status(500).json({ success: false });
+    response.writeHead(500, { Connection: 'close' });
+    response.end();
   });
 
   bb.on('close', () => response.status(200).json({ success: true }));
