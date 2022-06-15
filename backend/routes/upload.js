@@ -21,8 +21,7 @@ router.post('/', (request, response) => {
 
     if (!['audio/flac', 'audio/x-flac'].includes(fileObject.mimeType)) {
       request.unpipe(bb);
-      response.writeHead(415, { Connection: 'close' });
-      response.end();
+      response.writeHead(415, { Connection: 'close' }).end('Unsupported file type');
     }
 
     fileObject['filePath'] = path.join(os.tmpdir(), `${uuidv4()}.flac`);
@@ -40,8 +39,7 @@ router.post('/', (request, response) => {
 
   bb.on('error', () => {
     request.unpipe(bb);
-    response.writeHead(500, { Connection: 'close' });
-    response.end();
+    response.writeHead(500, { Connection: 'close' }).end('Could not parse request');
   });
 
   bb.on('close', () => response.status(200).json({ success: true }));

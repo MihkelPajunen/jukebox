@@ -98,8 +98,12 @@ const uploadFile = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_APP_API}/upload`, formData, config);
       storeNotifications.add('is-success', 'Upload has completed.');
-    } catch {
-      storeNotifications.add('is-danger', 'Upload was rejected.');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        storeNotifications.add('is-danger', 'Upload was rejected.');
+      }
+
+      clearForm();
     }
   }
 };
@@ -107,7 +111,6 @@ const uploadFile = async () => {
 const cancelUpload = () => {
   controller.abort();
   storeNotifications.add('is-warning', 'Upload was cancelled.');
-  clearForm();
 };
 </script>
 
