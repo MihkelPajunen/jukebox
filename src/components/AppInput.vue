@@ -3,7 +3,7 @@
     <label class="label" :for="label">{{ capitalize(label) }}</label>
     <div class="control">
       <input
-        @input="$emit('update:modelValue', updateModelValue($event))"
+        @input="updateModelValue"
         :value="modelValue"
         :id="label"
         :placeholder="placeholder"
