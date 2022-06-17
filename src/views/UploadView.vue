@@ -86,6 +86,20 @@ const uploadFile = async () => {
     formData.append('album', capitalize(form.value.album || ''));
     formData.append('file', form.value.file || '');
 
+    try {
+      let url = `${import.meta.env.VITE_APP_API}/spotify`;
+      url += `/artists/${form.value.artist}`;
+      url += `/tracks/${form.value.title}`;
+      url += `?album=${form.value.album}`;
+
+      const response = await axios.get(url);
+
+      formData.append('imageUrl', response.data.track?.imageUrl || '');
+      formData.set('title', response.data.track?.title || formData.get('title'));
+    } catch {
+      // TODO
+    }
+
     controller = new AbortController();
 
     const config = {

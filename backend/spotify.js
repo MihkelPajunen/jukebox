@@ -63,6 +63,7 @@ router.get('/artists/:artist/tracks/:title', authenticate, async (request, respo
 
     if (result.body.tracks.items[key].album.name === track.album.name) {
       track.artist['id'] = result.body.tracks.items[key].artists[0].id;
+      track.artist.name = result.body.tracks.items[key].artists[0].name;
       track.title = result.body.tracks.items[key].name;
       track.album['imageUrl'] = result.body.tracks.items[key].album.images[0].url;
       break;
@@ -72,6 +73,7 @@ router.get('/artists/:artist/tracks/:title', authenticate, async (request, respo
   // choose the top search result as a last resort
   if (!track.artist?.id) {
     track.artist['id'] = result.body.tracks.items[0].artists[0].id;
+    track.artist.name = result.body.tracks.items[0].artists[0].name;
     track.title = result.body.tracks.items[0].name;
 
     track['album'] = {
