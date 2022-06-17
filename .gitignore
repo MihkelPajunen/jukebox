@@ -29,3 +29,4 @@ coverage
 
 # Authentication keys
 *serviceAccountKey.json
+/backend/.env

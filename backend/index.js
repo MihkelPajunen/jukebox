@@ -21,6 +21,9 @@ app.use('/tracks', tracks);
 const upload = require('./routes/upload');
 app.use('/upload', upload);
 
+const spotify = require('./spotify');
+app.use('/spotify', spotify);
+
 app.listen(process.env.PORT || port, () => {
   console.log(`Express app listening on http://localhost:${process.env.PORT || port}`);
 });
