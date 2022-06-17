@@ -75,8 +75,8 @@ onMounted(async () => {
   }
 
   if (track.value && getArtistName(track.value.artist)) {
-    document.title = `${import.meta.env.VITE_APP_TITLE}\
-    | ${getArtistName(track.value.artist)} - ${track.value.title}`;
+    const trackDetails = `${getArtistName(track.value.artist)} - ${track.value.title}`;
+    document.title = `${import.meta.env.VITE_APP_TITLE} | ${trackDetails}`;
   }
 
   isLoading.value = false;
