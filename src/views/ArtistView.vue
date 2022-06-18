@@ -16,12 +16,6 @@
         </div>
         <div class="column is-12-mobile">
           <h1 class="title is-size-2 mb-4">{{ artist.name }}</h1>
-          <h2 class="title is-size-6 mb-2">Members</h2>
-          <ul class="mb-4">
-            <li v-for="member in artist.members.slice(0, 4)" :key="member">
-              <p>{{ member }}</p>
-            </li>
-          </ul>
         </div>
       </template>
     </div>
