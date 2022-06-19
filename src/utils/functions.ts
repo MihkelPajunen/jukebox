@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) {
     return error.message;
@@ -25,4 +27,12 @@ function capitalize(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-export { getErrorMessage, truncateString, capitalize };
+const artistExists = async (artist: string) => {
+  try {
+    return !!(await axios.get(`${import.meta.env.VITE_APP_API}/artists/${artist}`));
+  } catch {
+    return false;
+  }
+};
+
+export { getErrorMessage, truncateString, capitalize, artistExists };
