@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
 const express = require('express');
 const router = express.Router();
-const { validate } = require('uuid');
+const busboy = require('busboy');
+const { v4: uuidv4, validate } = require('uuid');
 const { capitalize } = require('../utils/functions');
 
 const db = require('../firebase');
@@ -56,6 +57,43 @@ router.get('/:id/tracks', async (request, response) => {
   }
 
   response.status(200).json({ success: true, tracks });
+});
+
+router.post('/new', (request, response) => {
+  const bb = busboy({ headers: request.headers });
+
+  const fields = {};
+
+  bb.on('field', (name, value) => (fields[name] = value));
+
+  const exit = (message = '') => {
+    request.unpipe(bb);
+    response.writeHead(500, { Connection: 'close' });
+    message.length > 0 ? response.end(message) : response.end();
+  };
+
+  bb.on('error', () => exit('Could not parse request'));
+
+  bb.on('close', () => {
+    if (!(fields?.name && fields?.name.length > 0)) {
+      return exit("Field 'name' was invalid.");
+    }
+
+    if (!(fields?.imageUrl && fields?.imageUrl.length > 0)) {
+      return exit("Field 'imageUrl' was invalid.");
+    }
+
+    const artist = {
+      id: uuidv4(),
+      name: fields.name,
+      imageUrl: fields.imageUrl
+    };
+
+    db.collection('artists').doc(artist.id).set(artist);
+    response.status(200).json({ success: true, artist });
+  });
+
+  request.pipe(bb);
 });
 
 module.exports = router;
