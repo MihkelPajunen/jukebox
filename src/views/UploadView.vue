@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useStoreNotifications } from '@/store/storeNotifications';
-import { capitalize } from '@/utils/functions';
+import { artistExists, capitalize } from '@/utils/functions';
 import axios from 'axios';
 
 import AppInput from '@/components/AppInput.vue';
@@ -64,6 +64,29 @@ const formIsValid = () => {
   return true;
 };
 
+const getArtistImage = async (id: string) => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_APP_API}/spotify/artists/${id}`);
+    return response.data?.artist?.imageUrl ?? '';
+  } catch {
+    return '';
+  }
+};
+
+const createArtist = async (artist: { name: string; imageUrl: string }) => {
+  const formData = new FormData();
+  artist.name && formData.append('name', artist.name);
+  artist.imageUrl && formData.append('imageUrl', artist.imageUrl);
+
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_APP_API}/artists/new`, formData);
+    response.data.success && storeNotifications.add('is-success', 'New artist was created.');
+    return response.data?.artist ?? undefined;
+  } catch {
+    return undefined;
+  }
+};
+
 const clearForm = () => {
   form.value.artist = '';
   form.value.title = '';
@@ -81,11 +104,6 @@ const uploadFile = async () => {
   if (formIsValid()) {
     const formData = new FormData();
 
-    formData.append('artist', capitalize(form.value.artist || ''));
-    formData.append('title', capitalize(form.value.title || ''));
-    formData.append('album', capitalize(form.value.album || ''));
-    formData.append('file', form.value.file || '');
-
     try {
       let url = `${import.meta.env.VITE_APP_API}/spotify`;
       url += `/artists/${form.value.artist}`;
@@ -94,11 +112,35 @@ const uploadFile = async () => {
 
       const response = await axios.get(url);
 
-      formData.append('imageUrl', response.data.track?.imageUrl || '');
-      formData.set('title', response.data.track?.title || formData.get('title'));
+      if (response.data.success) {
+        formData.append('title', response.data.track.title);
+        formData.append('album', response.data.track.album.name);
+        formData.append('imageUrl', response.data.track.album.imageUrl);
+
+        if (await artistExists(response.data.track.artist.name || form.value.artist)) {
+          let url = `${import.meta.env.VITE_APP_API}/artists`;
+          url += `/${response.data.track.artist.name || form.value.artist}`;
+
+          const artist = await axios.get(url);
+          artist.data?.artist?.id && formData.append('artist', artist.data.artist.id);
+        } else {
+          const artist = await createArtist({
+            name: response.data.track.artist.name ?? form.value.artist,
+            imageUrl: await getArtistImage(response.data.track.artist.id)
+          });
+
+          artist.data?.artist?.id && formData.append('artist', artist.data.artist.id);
+        }
+      }
     } catch {
-      // TODO
+      console.log('Failed to retrieve track data from Spotify.');
     }
+
+    formData.has('artist') || formData.append('artist', capitalize(form.value.artist));
+    formData.has('title') || formData.append('title', capitalize(form.value.title));
+    formData.has('album') || formData.append('album', capitalize(form.value.album));
+    formData.has('imageUrl') || formData.append('imageUrl', '');
+    form.value.file && formData.append('file', form.value.file);
 
     controller = new AbortController();
 
