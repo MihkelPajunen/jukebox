@@ -16,7 +16,7 @@ const artists = require('./routes/artists');
 app.use('/artists', artists.router);
 
 const tracks = require('./routes/tracks');
-app.use('/tracks', tracks);
+app.use('/tracks', tracks.router);
 
 const upload = require('./routes/upload');
 app.use('/upload', upload);

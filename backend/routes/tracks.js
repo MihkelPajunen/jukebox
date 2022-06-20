@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
 const express = require('express');
 const router = express.Router();
-
+const { validate } = require('uuid');
+const { capitalize } = require('../utils/functions');
 const db = require('../firebase');
 
 router.get('/', async (_request, response) => {
@@ -17,14 +18,29 @@ router.get('/', async (_request, response) => {
   response.status(200).json({ success: true, tracks });
 });
 
-router.get('/:id', async (request, response) => {
-  const snapshot = await db.collection('tracks').doc(request.params.id).get();
+const getTrack = async (track) => {
+  if (validate(track)) {
+    const snapshot = await db.collection('tracks').doc(track).get();
 
-  if (!snapshot.data()) {
-    return response.status(404).json({ success: false, track: {} });
+    if (!snapshot.data()) return null;
+    return snapshot.data();
   }
 
-  response.status(200).json({ success: true, track: snapshot.data() });
+  track = decodeURI(track).split(' ');
+  track = track.map((element) => capitalize(element));
+  track = track.join(' ');
+
+  const snapshot = await db.collection('tracks').where('title', '==', track).limit(1).get();
+
+  if (snapshot.empty) return null;
+  return snapshot.docs[0].data();
+};
+
+router.get('/:track', async (request, response) => {
+  const track = await getTrack(request.params.track);
+
+  if (!track) return response.status(404).json({ success: false, track: {} });
+  response.status(200).json({ success: true, track });
 });
 
-module.exports = router;
+module.exports = { router, getTrack };
