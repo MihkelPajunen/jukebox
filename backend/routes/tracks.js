@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { validate } = require('uuid');
-const { capitalize } = require('../utils/functions');
+const { titleize } = require('../utils/functions');
 const db = require('../firebase');
 
 router.get('/', async (_request, response) => {
@@ -26,9 +26,7 @@ const getTrack = async (track) => {
     return snapshot.data();
   }
 
-  track = decodeURI(track).split(' ');
-  track = track.map((element) => capitalize(element));
-  track = track.join(' ');
+  track = titleize(decodeURI(track));
 
   const snapshot = await db.collection('tracks').where('title', '==', track).limit(1).get();
 

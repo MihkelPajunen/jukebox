@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { validate } = require('uuid');
-const { capitalize } = require('../utils/functions');
+const { titleize } = require('../utils/functions');
 const db = require('../firebase');
 
 router.get('/', async (_request, response) => {
@@ -26,9 +26,7 @@ const getArtist = async (artist) => {
     return snapshot.data();
   }
 
-  artist = decodeURI(artist).split(' ');
-  artist = artist.map((element) => capitalize(element));
-  artist = artist.join(' ');
+  artist = titleize(decodeURI(artist));
 
   const snapshot = await db.collection('artists').where('name', '==', artist).limit(1).get();
 
