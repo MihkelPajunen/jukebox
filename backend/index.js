@@ -13,7 +13,7 @@ app.use((_request, response, next) => {
 });
 
 const artists = require('./routes/artists');
-app.use('/artists', artists);
+app.use('/artists', artists.router);
 
 const tracks = require('./routes/tracks');
 app.use('/tracks', tracks);
