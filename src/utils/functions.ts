@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) {
     return error.message;
@@ -27,12 +25,17 @@ function capitalize(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-const artistExists = async (artist: string) => {
-  try {
-    return !!(await axios.get(`${import.meta.env.VITE_APP_API}/artists/${artist}`));
-  } catch {
-    return false;
-  }
-};
+function titleize(string: string) {
+  const exceptions = ['and', 'of', 'the'];
 
-export { getErrorMessage, truncateString, capitalize, artistExists };
+  let words = string.split(' ');
+  words = words.map((element, index) => {
+    if (index === 0) return capitalize(element);
+    if (exceptions.includes(element.toLowerCase())) return element.toLowerCase();
+    return capitalize(element);
+  });
+
+  return words.join(' ');
+}
+
+export { getErrorMessage, truncateString, capitalize, titleize };
