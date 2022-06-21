@@ -25,7 +25,7 @@ const getSpotifyArtist = async (artist) => {
 
     return {
       name: titleize(response.body.name),
-      imageUrl: titleize(response.body.images[0].url)
+      imageUrl: response.body.images[0].url
     };
   } catch {
     return null;
