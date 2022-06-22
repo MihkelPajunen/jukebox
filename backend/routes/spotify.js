@@ -81,8 +81,6 @@ const getSpotifyTrack = async (artist, track, album = undefined) => {
       }
     };
   }
-
-  return result;
 };
 
 router.get('/artists/:artist/tracks/:track', async (request, response) => {
