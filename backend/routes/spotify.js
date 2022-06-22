@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 const express = require('express');
 const router = express.Router();
-require('dotenv').config();
 const SpotifyWebApi = require('spotify-web-api-node');
 const { titleize } = require('../utils/functions');
 
