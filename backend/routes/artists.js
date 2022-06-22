@@ -54,4 +54,9 @@ router.get('/:artist/tracks', async (request, response) => {
   response.status(200).json({ success: true, tracks });
 });
 
-module.exports = { router, getArtist };
+const createArtist = (artist) => {
+  if (!artist?.id || !artist?.name || !artist?.imageUrl) return;
+  db.collection('artists').doc(artist.id).set(artist);
+};
+
+module.exports = { router, getArtist, createArtist };
