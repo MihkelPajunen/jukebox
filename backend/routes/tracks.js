@@ -3,12 +3,12 @@ const express = require('express');
 const router = express.Router();
 const { validate } = require('uuid');
 const { titleize } = require('../utils/functions');
-const db = require('../firebase');
+const { firestore } = require('../firebase');
 
 router.get('/', async (_request, response) => {
   const tracks = [];
 
-  const snapshot = await db.collection('tracks').get();
+  const snapshot = await firestore.collection('tracks').get();
   snapshot.forEach((document) => tracks.push(document.data()));
 
   if (tracks.length < 1) {
@@ -20,7 +20,7 @@ router.get('/', async (_request, response) => {
 
 const getTrack = async (track) => {
   if (validate(track)) {
-    const snapshot = await db.collection('tracks').doc(track).get();
+    const snapshot = await firestore.collection('tracks').doc(track).get();
 
     if (!snapshot.data()) return null;
     return snapshot.data();
@@ -28,7 +28,7 @@ const getTrack = async (track) => {
 
   track = titleize(decodeURI(track));
 
-  const snapshot = await db.collection('tracks').where('title', '==', track).limit(1).get();
+  const snapshot = await firestore.collection('tracks').where('title', '==', track).limit(1).get();
 
   if (snapshot.empty) return null;
   return snapshot.docs[0].data();

@@ -3,12 +3,12 @@ const express = require('express');
 const router = express.Router();
 const { validate } = require('uuid');
 const { titleize } = require('../utils/functions');
-const db = require('../firebase');
+const { firestore } = require('../firebase');
 
 router.get('/', async (_request, response) => {
   const artists = [];
 
-  const snapshot = await db.collection('artists').get();
+  const snapshot = await firestore.collection('artists').get();
   snapshot.forEach((document) => artists.push(document.data()));
 
   if (artists.length < 1) {
@@ -20,7 +20,7 @@ router.get('/', async (_request, response) => {
 
 const getArtist = async (artist) => {
   if (validate(artist)) {
-    const snapshot = await db.collection('artists').doc(artist).get();
+    const snapshot = await firestore.collection('artists').doc(artist).get();
 
     if (!snapshot.data()) return null;
     return snapshot.data();
@@ -28,7 +28,7 @@ const getArtist = async (artist) => {
 
   artist = titleize(decodeURI(artist));
 
-  const snapshot = await db.collection('artists').where('name', '==', artist).limit(1).get();
+  const snapshot = await firestore.collection('artists').where('name', '==', artist).limit(1).get();
 
   if (snapshot.empty) return null;
   return snapshot.docs[0].data();
@@ -47,7 +47,7 @@ router.get('/:artist/tracks', async (request, response) => {
   const artist = await getArtist(request.params.artist);
   if (!artist) return response.status(404).json({ success: false, tracks });
 
-  const snapshot = await db.collection('tracks').where('artist', '==', artist.id).get();
+  const snapshot = await firestore.collection('tracks').where('artist', '==', artist.id).get();
   snapshot.forEach((document) => tracks.push(document.data()));
 
   if (tracks.length < 1) return response.status(404).json({ success: false, tracks });
@@ -56,7 +56,7 @@ router.get('/:artist/tracks', async (request, response) => {
 
 const createArtist = (artist) => {
   if (!artist?.id || !artist?.name || !artist?.imageUrl) return;
-  db.collection('artists').doc(artist.id).set(artist);
+  firestore.collection('artists').doc(artist.id).set(artist);
 };
 
 module.exports = { router, getArtist, createArtist };
