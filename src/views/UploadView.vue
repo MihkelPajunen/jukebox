@@ -97,7 +97,7 @@ const uploadFile = async () => {
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_APP_API}/upload`, formData, config);
-      response.data?.artist && storeNotifications.add('is-success', 'New artist was found.');
+      response.data?.artist?.new && storeNotifications.add('is-success', 'New artist was added.');
       storeNotifications.add('is-success', 'Upload has completed.');
     } catch (error) {
       if (axios.isAxiosError(error)) {

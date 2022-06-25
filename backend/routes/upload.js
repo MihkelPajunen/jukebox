@@ -12,11 +12,22 @@ const { getSpotifyTrack, getSpotifyArtist } = require('./spotify');
 router.post('/', (request, response) => {
   const bb = busboy({ headers: request.headers });
 
-  const fields = {};
+  const artist = {};
+  const track = { id: uuidv4() };
 
-  bb.on('field', (name, value) => (fields[name] = value));
+  bb.on('field', (name, value) => {
+    switch (name) {
+      case 'artist': {
+        artist['name'] = value;
+        break;
+      }
+      default: {
+        track[name] = value;
+      }
+    }
+  });
 
-  const fileObject = {};
+  const fileObject = { fileSize: 0 };
 
   const errorResponse = (status, message = '') => {
     request.unpipe(bb);
@@ -35,8 +46,6 @@ router.post('/', (request, response) => {
 
     const stream = fs.createWriteStream(fileObject.filePath);
 
-    fileObject['fileSize'] = 0;
-
     file.on('data', (data) => {
       stream.write(data);
       fileObject.fileSize += data.length;
@@ -48,37 +57,37 @@ router.post('/', (request, response) => {
   bb.on('error', () => errorResponse(500, 'Request could not be parsed.'));
 
   bb.on('close', async () => {
-    if (!fields?.artist || !fields?.title || !fields?.album) {
+    if (!artist?.name || !track?.title || !track?.album) {
       return errorResponse(422, 'Request did not specify all required fields.');
     }
 
     if (!fileObject) return errorResponse(422, 'Request did not contain a file.');
 
-    const spotifyTrack = await getSpotifyTrack(fields.artist, fields.title, fields.album);
-
-    const extras = {};
+    const spotifyTrack = await getSpotifyTrack(artist.name, track.title, track.album);
 
     if (spotifyTrack) {
-      fields.title = spotifyTrack.title;
-      fields.album = spotifyTrack.album.title;
-      fields['imageUrl'] = spotifyTrack.album.imageUrl;
+      track.title = spotifyTrack.title;
+      track.album = spotifyTrack.album.title;
+      track['imageUrl'] = spotifyTrack.album.imageUrl;
 
-      if (!(await getArtist(spotifyTrack.artist.name))) {
+      const artistExists = await getArtist(spotifyTrack.artist.name);
+
+      if (artistExists) {
+        artist['id'] = artistExists.id;
+        artist.name = artistExists.name;
+      } else {
         const spotifyArtist = await getSpotifyArtist(spotifyTrack.artist.id);
 
-        const artist = {
-          id: uuidv4(),
-          name: spotifyArtist.name,
-          imageUrl: spotifyArtist.imageUrl
-        };
+        artist['id'] = uuidv4();
+        artist.name = spotifyArtist.name;
+        artist['imageUrl'] = spotifyArtist.imageUrl;
 
         createArtist(artist);
-        fields.artist = artist.id;
-        extras['artist'] = artist;
+        artist['new'] = true;
       }
     }
 
-    response.status(200).json({ success: true, ...extras });
+    response.status(200).json({ success: true, artist, track });
   });
 
   request.pipe(bb);
