@@ -8,6 +8,7 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const { getArtist, createArtist } = require('./artists');
 const { getSpotifyTrack, getSpotifyArtist } = require('./spotify');
+const mm = require('music-metadata');
 
 router.post('/', (request, response) => {
   const bb = busboy({ headers: request.headers });
@@ -85,6 +86,14 @@ router.post('/', (request, response) => {
         createArtist(artist);
         artist['new'] = true;
       }
+    }
+
+    try {
+      const metdata = await mm.parseFile(fileObject.filePath);
+      fileObject['duration'] = metdata.format.duration;
+      fileObject['bitrate'] = metdata.format.bitrate;
+    } catch {
+      fileObject['duration'] = fileObject['bitrate'] = '';
     }
 
     response.status(200).json({ success: true, artist, track });
