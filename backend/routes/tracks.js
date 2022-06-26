@@ -41,4 +41,10 @@ router.get('/:track', async (request, response) => {
   response.status(200).json({ success: true, track });
 });
 
-module.exports = { router, getTrack };
+const createTrack = (track) => {
+  const keys = ['id', 'title', 'album', 'artist', 'imageUrl', 'fileUrl'];
+  for (key in keys) if (!(keys[key] in track)) return;
+  firestore.collection('tracks').doc(track.id).set(track);
+};
+
+module.exports = { router, getTrack, createTrack };
