@@ -38,4 +38,19 @@ function titleize(string: string) {
   return words.join(' ');
 }
 
-export { getErrorMessage, truncateString, capitalize, titleize };
+function formatTime(duration: string | number) {
+  if (isNaN(+duration)) return 'Unknown';
+
+  const hours = Math.floor(+duration / 3600);
+  const minutes = Math.floor((+duration % 3600) / 60);
+  const seconds = Math.floor(+duration % 60);
+
+  const units = [hours, minutes, seconds].map(String);
+  units.forEach((element, index) => (units[index] = +element < 10 ? '0' + element : element));
+
+  if (hours === 0) units.splice(0, 1);
+
+  return units.join(':');
+}
+
+export { getErrorMessage, truncateString, capitalize, titleize, formatTime };
