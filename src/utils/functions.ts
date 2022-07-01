@@ -22,7 +22,13 @@ function truncateString(string: string, maxLength: number) {
 }
 
 function capitalize(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  const match = string.search(/(?<=[^[a-z]|[0-9]\s])[a-z]|[0-9]/i);
+  const index = match === -1 ? 0 : match;
+
+  const characters = string.toLowerCase().split('');
+  characters[index] = characters[index].toUpperCase();
+
+  return characters.join('');
 }
 
 function titleize(string: string) {
