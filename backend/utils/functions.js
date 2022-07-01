@@ -10,12 +10,13 @@ function capitalize(string) {
 }
 
 function titleize(string) {
-  const exceptions = ['and', 'of', 'the'];
+  const exceptions = ['and', 'of', 'the', 'ft', 'feat']; // words that should be lowercase
+  const regex = new RegExp(`(?<![\\w\\d])${exceptions.join('|')}(?![\\w\\d])`, 'i');
 
   let words = string.split(' ');
   words = words.map((element, index) => {
     if (index === 0) return capitalize(element);
-    if (exceptions.includes(element.toLowerCase())) return element.toLowerCase();
+    if (element.match(regex)) return element.toLowerCase();
     return capitalize(element);
   });
 
