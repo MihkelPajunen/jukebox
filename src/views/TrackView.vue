@@ -21,6 +21,13 @@
             <li>Track: {{ track.title }}</li>
             <li>Album: {{ track.album }}</li>
           </ul>
+          <h2 class="title is-size-6 mb-2">Metadata</h2>
+          <ul class="mb-4">
+            <li>Size: {{ (track.metadata.size / 1000000).toFixed(2) }}MB</li>
+            <li>Format: {{ track.metadata.format }}</li>
+            <li>Bitrate: {{ (track.metadata.bitrate / 1000).toFixed(2) }}kbit/s</li>
+            <li>Duration: {{ formatTime(track.metadata.duration) }}</li>
+          </ul>
         </div>
       </template>
     </div>
@@ -32,7 +39,7 @@ import { ref, onMounted } from 'vue';
 import { useStoreTracks } from '@/store/storeTracks';
 import { useStoreArtists } from '@/store/storeArtists';
 import { useRoute } from 'vue-router';
-import { getErrorMessage } from '@/utils/functions';
+import { formatTime, getErrorMessage } from '@/utils/functions';
 
 import AppLoader from '@/components/AppLoader.vue';
 import AppImage from '@/components/AppImage.vue';
