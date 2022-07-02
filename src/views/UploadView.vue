@@ -101,7 +101,7 @@ const uploadFile = async () => {
       storeNotifications.add('is-success', 'Upload has completed.');
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        storeNotifications.add('is-danger', 'Upload was rejected.');
+        storeNotifications.add('is-danger', 'Upload did not complete.');
       }
 
       clearForm();

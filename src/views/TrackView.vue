@@ -28,6 +28,9 @@
             <li>Bitrate: {{ (track.metadata.bitrate / 1000).toFixed(2) }}kbit/s</li>
             <li>Duration: {{ formatTime(track.metadata.duration) }}</li>
           </ul>
+          <button @click="download" :class="['button', 'is-info', { 'is-loading': isDownloading }]">
+            <FontAwesome class="mr-2" icon="download" />Download
+          </button>
         </div>
       </template>
     </div>
@@ -38,6 +41,7 @@
 import { ref, onMounted } from 'vue';
 import { useStoreTracks } from '@/store/storeTracks';
 import { useStoreArtists } from '@/store/storeArtists';
+import { useStoreNotifications } from '@/store/storeNotifications';
 import { useRoute } from 'vue-router';
 import { formatTime, getErrorMessage } from '@/utils/functions';
 
@@ -46,6 +50,7 @@ import AppImage from '@/components/AppImage.vue';
 
 import type { Track } from '@/types/Track';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
+import axios from 'axios';
 
 const isLoading = ref(true);
 
@@ -58,6 +63,7 @@ const track = ref<Track | undefined>(undefined);
 
 const storeTracks = useStoreTracks();
 const storeArtists = useStoreArtists();
+const storeNotifications = useStoreNotifications();
 
 const getArtistName = (id: string) => storeArtists.getArtist(id)?.name || 'Unknown';
 
@@ -88,6 +94,31 @@ onMounted(async () => {
 
   isLoading.value = false;
 });
+
+const isDownloading = ref(false);
+
+const download = async () => {
+  if (!track.value?.fileUrl) {
+    return storeNotifications.add('is-warning', 'Could not locate any file.');
+  }
+
+  isDownloading.value = true;
+
+  try {
+    const response = await axios.get(track.value.fileUrl, { responseType: 'blob' });
+    const blob = new Blob([response.data], { type: response.data.type });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${getArtistName(track.value.artist)} - ${track.value.title}`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  } catch {
+    storeNotifications.add('is-danger', 'Download did not complete.');
+  }
+
+  isDownloading.value = false;
+};
 </script>
 
 <style scoped lang="sass">
