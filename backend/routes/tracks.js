@@ -47,4 +47,15 @@ const createTrack = (track) => {
   firestore.collection('tracks').doc(track.id).set(track);
 };
 
+router.put('/:track', async (request, response) => {
+  const track = await getTrack(request.params.track);
+  if (!track) return response.status(404).json({ success: false, track: {} });
+
+  request.query?.playback && track.statistics.playbacks++;
+  request.query?.download && track.statistics.downloads++;
+
+  firestore.collection('tracks').doc(track.id).set(track);
+  response.status(200).json({ success: true, track });
+});
+
 module.exports = { router, getTrack, createTrack };

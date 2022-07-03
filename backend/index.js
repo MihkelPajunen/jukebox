@@ -9,6 +9,7 @@ dotenv.config();
 app.use((_request, response, next) => {
   response.set('Access-Control-Allow-Origin', '*');
   response.set('Access-Control-Allow-Headers', 'Content-Type');
+  response.set('Access-Control-Allow-Methods', 'GET, PUT, POST');
   next();
 });
 
