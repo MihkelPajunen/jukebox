@@ -16,6 +16,12 @@
         </div>
         <div class="column is-12-mobile">
           <h1 class="title is-size-2 mb-4">{{ artist.name }}</h1>
+          <h2 class="title is-size-6 mb-2">Collection</h2>
+          <ul>
+            <li v-for="track in tracks.slice(0, 10)" :key="track.id">
+              <RouterLink :to="`/tracks/${track.id}`">{{ track.title }}</RouterLink>
+            </li>
+          </ul>
         </div>
       </template>
     </div>
