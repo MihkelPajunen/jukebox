@@ -11,4 +11,8 @@ export interface Track {
     bitrate: number;
     duration: number;
   };
+  statistics: {
+    playbacks: number;
+    downloads: number;
+  };
 }
