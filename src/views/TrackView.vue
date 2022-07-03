@@ -10,6 +10,7 @@
       <template v-else>
         <div class="column is-12-mobile is-flex is-flex-direction-column">
           <AppImage :imageUrl="track.imageUrl" />
+          <AppPlayer :source="track.fileUrl" :type="track.metadata.format" />
         </div>
         <div class="column is-12-mobile">
           <h1 class="title is-size-4 mb-4">
@@ -44,13 +45,14 @@ import { useStoreArtists } from '@/store/storeArtists';
 import { useStoreNotifications } from '@/store/storeNotifications';
 import { useRoute } from 'vue-router';
 import { formatTime, getErrorMessage } from '@/utils/functions';
+import axios from 'axios';
 
 import AppLoader from '@/components/AppLoader.vue';
 import AppImage from '@/components/AppImage.vue';
+import AppPlayer from '@/components/AppPlayer.vue';
 
 import type { Track } from '@/types/Track';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
-import axios from 'axios';
 
 const isLoading = ref(true);
 
