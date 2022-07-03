@@ -67,6 +67,10 @@ router.post('/', (request, response) => {
         format: fileObject.mimeType,
         bitrate: '',
         duration: ''
+      },
+      statistics: {
+        playbacks: 0,
+        downloads: 0
       }
     };
 
