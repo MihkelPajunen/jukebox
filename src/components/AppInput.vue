@@ -3,6 +3,7 @@
     <label class="label" :for="label">{{ capitalize(label) }}</label>
     <div class="control">
       <input
+        ref="target"
         @input="updateModelValue"
         :value="modelValue"
         :id="label"
@@ -16,9 +17,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useFocus } from '@vueuse/core';
 import { capitalize } from '@/utils/functions';
 
-defineProps({
+const props = defineProps({
   label: {
     type: String,
     required: true
@@ -29,8 +32,15 @@ defineProps({
   placeholder: {
     type: String,
     required: true
+  },
+  focus: {
+    type: Boolean,
+    default: false
   }
 });
+
+const target = ref();
+useFocus(target, { initialValue: props.focus });
 
 const emit = defineEmits(['update:modelValue']);
 

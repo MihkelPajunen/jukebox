@@ -7,7 +7,7 @@
             <h1 class="title is-size-4">Upload</h1>
           </div>
         </div>
-        <AppInput v-model="form.artist" label="artist" placeholder="Zero 7" />
+        <AppInput v-model="form.artist" :focus="true" label="artist" placeholder="Zero 7" />
         <AppInput v-model="form.title" label="title" placeholder="Give It Away" />
         <AppInput v-model="form.album" label="album" placeholder="Simple Things" />
         <AppUpload v-model="form.file" />
