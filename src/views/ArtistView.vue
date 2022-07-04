@@ -16,9 +16,9 @@
         </div>
         <div class="column is-12-mobile">
           <h1 class="title is-size-2 mb-4">{{ artist.name }}</h1>
-          <h2 class="title is-size-6 mb-2">Collection</h2>
+          <h2 class="title is-size-6 mb-2">Popular tracks</h2>
           <ul>
-            <li v-for="track in tracks.slice(0, 10)" :key="track.id">
+            <li v-for="track in sortByPlaybacks(tracks).slice(0, 10)" :key="track.id">
               <RouterLink :to="`/tracks/${track.id}`">{{ track.title }}</RouterLink>
             </li>
           </ul>
@@ -61,6 +61,10 @@ const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: stri
 const viewRandomTrack = () => {
   const index = Math.floor(Math.random() * tracks.value.length);
   router.push({ path: `/tracks/${tracks.value[index].id}` });
+};
+
+const sortByPlaybacks = (tracks: Track[]) => {
+  return tracks.sort((a, b) => b.statistics.playbacks - a.statistics.playbacks);
 };
 
 onMounted(async () => {
