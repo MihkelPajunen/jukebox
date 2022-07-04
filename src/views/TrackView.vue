@@ -10,7 +10,12 @@
       <template v-else>
         <div class="column is-12-mobile is-flex is-flex-direction-column">
           <AppImage :imageUrl="track.imageUrl" />
-          <AppPlayer :source="track.fileUrl" :type="track.metadata.format" />
+          <AppPlayer
+            @play="updateStatistic('playback')"
+            :track="track.id"
+            :source="track.fileUrl"
+            :type="track.metadata.format"
+          />
         </div>
         <div class="column is-12-mobile">
           <h1 class="title is-size-4 mb-4">
@@ -97,6 +102,10 @@ onMounted(async () => {
   isLoading.value = false;
 });
 
+const updateStatistic = (key: string) => {
+  track.value && axios.put(`${import.meta.env.VITE_APP_API}/tracks/${track.value.id}?${key}=true`);
+};
+
 const isDownloading = ref(false);
 
 const download = async () => {
@@ -114,7 +123,9 @@ const download = async () => {
     link.href = URL.createObjectURL(blob);
     link.download = `${getArtistName(track.value.artist)} - ${track.value.title}`;
     link.click();
+
     URL.revokeObjectURL(link.href);
+    updateStatistic('download');
   } catch {
     storeNotifications.add('is-danger', 'Download did not complete.');
   }

@@ -22,9 +22,13 @@ defineProps({
 const target = ref<HTMLAudioElement>();
 const player = ref<Plyr>();
 
+const emit = defineEmits(['play']);
+
 onMounted(() => {
   const controls = ['play', 'progress', 'current-time', 'mute', 'volume'];
   target.value && (player.value = new Plyr(target.value, { controls }));
+
+  player.value?.once('play', () => emit('play'));
 });
 
 onBeforeUnmount(() => player.value?.pause());
