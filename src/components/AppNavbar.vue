@@ -20,14 +20,19 @@
         </a>
       </div>
 
-      <div :class="['navbar-menu', { 'is-active': isActive }]" ref="navbarMenu">
+      <div :class="['navbar-menu', 'py-0', { 'is-active': isActive }]" ref="navbarMenu">
+        <div id="navbar-start" class="navbar-start"></div>
+
         <div class="navbar-end">
           <RouterLink
             @click="isActive = false"
             class="navbar-item"
             active-class="is-active"
             to="/artists"
-            >Artists
+          >
+            <div class="level">
+              <span class="level-item">Artists</span>
+            </div>
           </RouterLink>
 
           <RouterLink
@@ -35,7 +40,10 @@
             class="navbar-item"
             active-class="is-active"
             to="/tracks"
-            >Tracks
+          >
+            <div class="level">
+              <span class="level-item">Tracks</span>
+            </div>
           </RouterLink>
 
           <div v-if="width > 768" class="navbar-item">
@@ -50,7 +58,10 @@
             class="navbar-item"
             active-class="is-active"
             to="/upload"
-            >Upload
+          >
+            <div class="level">
+              <span class="level-item">Upload</span>
+            </div>
           </RouterLink>
         </div>
       </div>

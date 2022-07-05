@@ -1,5 +1,10 @@
 <template>
   <div class="artists">
+    <Teleport to="#navbar-start">
+      <div class="navbar-item">
+        <AppSearch placeholder="Search for an artist" :disabled="storeArtists.isEmpty" />
+      </div>
+    </Teleport>
     <AppLoader v-if="isLoading" />
     <div v-else class="columns is-centered is-mobile is-multiline">
       <div v-if="storeArtists.isEmpty" class="column is-narrow">
@@ -28,6 +33,7 @@ import { useStoreArtists } from '@/store/storeArtists';
 import { getErrorMessage } from '@/utils/functions';
 
 import AppLoader from '@/components/AppLoader.vue';
+import AppSearch from '@/components/AppSearch.vue';
 import AppCard from '@/components/AppCard.vue';
 
 const isLoading = ref(true);
