@@ -7,9 +7,9 @@
             <h1 class="title is-size-4">Upload</h1>
           </div>
         </div>
-        <AppInput v-model="form.artist" :focus="true" label="artist" placeholder="Zero 7" />
-        <AppInput v-model="form.title" label="title" placeholder="Give It Away" />
-        <AppInput v-model="form.album" label="album" placeholder="Simple Things" />
+        <AppInput v-model="form.artist" :focus="true" label="artist" placeholder="Artist name" />
+        <AppInput v-model="form.title" label="title" placeholder="Track title" />
+        <AppInput v-model="form.album" label="album" placeholder="Album title" />
         <AppUpload v-model="form.file" />
         <Transition name="fade">
           <progress v-show="progress > 0" class="progress is-info" :value="progress" max="100" />
