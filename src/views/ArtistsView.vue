@@ -62,8 +62,9 @@ const filteredArtists = computed(() => {
 
     searchTerms.forEach((keyword) => {
       const index = searchResults.findIndex((element) => element.artist.id === artist.id);
+      const regex = new RegExp(`^${keyword}`, 'i');
 
-      if (name.includes(keyword)) {
+      if (name.find((element) => element.match(regex))) {
         index === -1 && searchResults.push({ artist: artist, accuracy: 1 });
         index !== -1 && searchResults[index].accuracy++;
       }

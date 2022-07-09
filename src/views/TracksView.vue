@@ -57,6 +57,8 @@ const notification = ref({
 const storeTracks = useStoreTracks();
 const storeArtists = useStoreArtists();
 
+const getArtistName = (id: string) => storeArtists.getArtist(id)?.name || 'Unknown';
+
 const searchString = ref('');
 
 const filteredTracks = computed(() => {
@@ -69,13 +71,14 @@ const filteredTracks = computed(() => {
 
     searchTerms.forEach((keyword) => {
       const index = searchResults.findIndex((element) => element.track.id === track.id);
+      const regex = new RegExp(`^${keyword}`, 'i');
 
-      if (artist.includes(keyword)) {
+      if (artist.find((element) => element.match(regex))) {
         index === -1 && searchResults.push({ track: track, accuracy: 1 });
         index !== -1 && searchResults[index].accuracy++;
       }
 
-      if (title.includes(keyword)) {
+      if (title.find((element) => element.match(regex))) {
         index === -1 && searchResults.push({ track: track, accuracy: 1 });
         index !== -1 && searchResults[index].accuracy++;
       }
@@ -86,8 +89,6 @@ const filteredTracks = computed(() => {
   const results = searchResults.map((result) => result.track);
   return results.length > 0 ? results : storeTracks.tracks;
 });
-
-const getArtistName = (id: string) => storeArtists.getArtist(id)?.name || 'Unknown';
 
 onMounted(async () => {
   try {
