@@ -3,21 +3,26 @@
     <div class="control is-expanded">
       <input
         @input="updateModelValue"
+        ref="target"
         :value="modelValue"
         class="input"
         type="text"
         :placeholder="placeholder"
-        :disabled="disabled"
       />
     </div>
     <div class="control">
-      <a class="button is-info"><FontAwesome class="mr-2" icon="search" />Search</a>
+      <a @click="target.focus()" class="button is-info">
+        <FontAwesome class="mr-2" icon="search" />Search
+      </a>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { ref } from 'vue';
+import { useFocus } from '@vueuse/core';
+
+const props = defineProps({
   modelValue: {
     type: String
   },
@@ -25,11 +30,14 @@ defineProps({
     type: String,
     required: true
   },
-  disabled: {
+  focus: {
     type: Boolean,
-    required: true
+    default: false
   }
 });
+
+const target = ref();
+useFocus(target, { initialValue: props.focus });
 
 const emit = defineEmits(['update:modelValue']);
 

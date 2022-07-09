@@ -2,11 +2,7 @@
   <div class="tracks">
     <Teleport to="#navbar-start">
       <div class="navbar-item">
-        <AppSearch
-          v-model="searchString"
-          placeholder="Search for a track"
-          :disabled="storeTracks.isEmpty"
-        />
+        <AppSearch v-model="searchString" placeholder="Search for a track" :focus="true" />
       </div>
     </Teleport>
     <AppLoader v-if="isLoading" />

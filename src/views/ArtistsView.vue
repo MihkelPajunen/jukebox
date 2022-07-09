@@ -2,11 +2,7 @@
   <div class="artists">
     <Teleport to="#navbar-start">
       <div class="navbar-item">
-        <AppSearch
-          v-model="searchString"
-          placeholder="Search for an artist"
-          :disabled="storeArtists.isEmpty"
-        />
+        <AppSearch v-model="searchString" placeholder="Search for an artist" :focus="true" />
       </div>
     </Teleport>
     <AppLoader v-if="isLoading" />
