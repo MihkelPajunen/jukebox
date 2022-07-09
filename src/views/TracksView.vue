@@ -2,7 +2,11 @@
   <div class="tracks">
     <Teleport to="#navbar-start">
       <div class="navbar-item">
-        <AppSearch placeholder="Search for a track" :disabled="storeTracks.isEmpty" />
+        <AppSearch
+          v-model="searchString"
+          placeholder="Search for a track"
+          :disabled="storeTracks.isEmpty"
+        />
       </div>
     </Teleport>
     <AppLoader v-if="isLoading" />
@@ -13,7 +17,7 @@
         </div>
       </div>
       <template v-else>
-        <div v-for="track in storeTracks.tracks" :key="track.id" class="column is-12-mobile">
+        <div v-for="track in filteredTracks" :key="track.id" class="column is-12-mobile">
           <RouterLink :to="{ name: 'track', params: { id: track.id } }">
             <AppCard
               :id="track.id"
@@ -32,14 +36,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useStoreTracks } from '@/store/storeTracks';
 import { useStoreArtists } from '@/store/storeArtists';
-import { getErrorMessage } from '@/utils/functions';
+import { tokenize, getErrorMessage } from '@/utils/functions';
 
 import AppLoader from '@/components/AppLoader.vue';
 import AppSearch from '@/components/AppSearch.vue';
 import AppCard from '@/components/AppCard.vue';
+
+import type { Track } from '@/types/Track';
 
 const isLoading = ref(true);
 
@@ -50,6 +56,36 @@ const notification = ref({
 
 const storeTracks = useStoreTracks();
 const storeArtists = useStoreArtists();
+
+const searchString = ref('');
+
+const filteredTracks = computed(() => {
+  const searchTerms = tokenize(searchString.value.toLowerCase());
+  const searchResults: Array<{ track: Track; accuracy: number }> = [];
+
+  storeTracks.tracks.forEach((track) => {
+    const artist = tokenize(getArtistName(track.artist).toLowerCase());
+    const title = tokenize(track.title.toLowerCase());
+
+    searchTerms.forEach((keyword) => {
+      const index = searchResults.findIndex((element) => element.track.id === track.id);
+
+      if (artist.includes(keyword)) {
+        index === -1 && searchResults.push({ track: track, accuracy: 1 });
+        index !== -1 && searchResults[index].accuracy++;
+      }
+
+      if (title.includes(keyword)) {
+        index === -1 && searchResults.push({ track: track, accuracy: 1 });
+        index !== -1 && searchResults[index].accuracy++;
+      }
+    });
+  });
+
+  searchResults.sort((a, b) => b.accuracy - a.accuracy);
+  const results = searchResults.map((result) => result.track);
+  return results.length > 0 ? results : storeTracks.tracks;
+});
 
 const getArtistName = (id: string) => storeArtists.getArtist(id)?.name || 'Unknown';
 
