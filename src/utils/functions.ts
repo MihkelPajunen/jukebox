@@ -60,4 +60,14 @@ function formatTime(duration: string | number) {
   return units.join(':');
 }
 
-export { getErrorMessage, truncateString, capitalize, titleize, formatTime };
+function tokenize(string: string) {
+  string = string.replace(/[\W_]/g, ' ');
+  string = string.replace(/\s\s+/g, ' ');
+
+  const tokens: string[] = [];
+  string.split(' ').forEach((element) => element && tokens.push(element));
+
+  return tokens;
+}
+
+export { getErrorMessage, truncateString, capitalize, titleize, formatTime, tokenize };
