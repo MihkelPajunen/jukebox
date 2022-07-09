@@ -124,6 +124,8 @@ const download = async () => {
     link.download = `${getArtistName(track.value.artist)} - ${track.value.title}`;
     link.click();
 
+    storeNotifications.add('is-success', 'Download has completed.');
+
     URL.revokeObjectURL(link.href);
     updateStatistic('download');
   } catch {
