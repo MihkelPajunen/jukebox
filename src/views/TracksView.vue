@@ -66,16 +66,21 @@ const filteredTracks = computed(() => {
     const title = tokenize(track.title.toLowerCase());
 
     searchTerms.forEach((keyword) => {
-      const index = searchResults.findIndex((element) => element.track.id === track.id);
+      let index = searchResults.findIndex((element) => element.track.id === track.id);
       const regex = new RegExp(`^${keyword}`, 'i');
 
+      const appendSearchResult = (track: Track) => {
+        searchResults.push({ track: track, accuracy: 0 });
+        index = searchResults.length - 1;
+      };
+
       if (artist.find((element) => element.match(regex))) {
-        index === -1 && searchResults.push({ track: track, accuracy: 1 });
+        index === -1 && appendSearchResult(track);
         index !== -1 && searchResults[index].accuracy++;
       }
 
       if (title.find((element) => element.match(regex))) {
-        index === -1 && searchResults.push({ track: track, accuracy: 1 });
+        index === -1 && appendSearchResult(track);
         index !== -1 && searchResults[index].accuracy++;
       }
     });

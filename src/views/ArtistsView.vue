@@ -57,11 +57,16 @@ const filteredArtists = computed(() => {
     const name = tokenize(artist.name.toLowerCase());
 
     searchTerms.forEach((keyword) => {
-      const index = searchResults.findIndex((element) => element.artist.id === artist.id);
+      let index = searchResults.findIndex((element) => element.artist.id === artist.id);
       const regex = new RegExp(`^${keyword}`, 'i');
 
+      const appendSearchResult = (artist: Artist) => {
+        searchResults.push({ artist: artist, accuracy: 0 });
+        index = searchResults.length - 1;
+      };
+
       if (name.find((element) => element.match(regex))) {
-        index === -1 && searchResults.push({ artist: artist, accuracy: 1 });
+        index === -1 && appendSearchResult(artist);
         index !== -1 && searchResults[index].accuracy++;
       }
     });
