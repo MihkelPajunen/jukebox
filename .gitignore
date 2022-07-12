@@ -30,3 +30,8 @@ coverage
 # Authentication keys
 *serviceAccountKey.json
 /backend/.env
+
+# Firebase tools
+.firebase
+.firebaserc
+firebase.json
