@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 function capitalize(string) {
-  const match = string.search(/(?<=[^[a-z]|[0-9]\s])[a-z]|[0-9]/i);
+  const match = string.search(/[a-z]|[0-9]/i);
   const index = match === -1 ? 0 : match;
 
   const characters = string.toLowerCase().split('');
