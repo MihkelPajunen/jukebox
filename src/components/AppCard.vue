@@ -1,5 +1,5 @@
 <template>
-  <div class="card" data-aos="fade-left">
+  <div class="card" :data-aos="width < 769 ? 'fade-up' : 'fade-left'">
     <div class="card-image">
       <AppImage :image-url="imageUrl" />
     </div>
@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { truncateString } from '@/utils/functions';
+import { useWindowSize } from '@vueuse/core';
 
 import AppImage from './AppImage.vue';
 
@@ -26,4 +27,6 @@ defineProps({
     required: true
   }
 });
+
+const { width } = useWindowSize();
 </script>
