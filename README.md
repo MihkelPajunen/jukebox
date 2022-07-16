@@ -81,7 +81,7 @@ This endpoint returns an `Array` of all the artists that exist in the database.
     {
       "name": "Zero 7",
       "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb85c10aefe83110535eea474c",
-      "id": "d927395f-d870-4ace-b370-e1e8e4dd5d1c"
+      "id": "b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29"
     }
   ]
 }
@@ -90,7 +90,7 @@ This endpoint returns an `Array` of all the artists that exist in the database.
 ## Get a specific artist from /artists/artist
 
 ```
-https://jukebox-backend-europe.herokuapp.com/artists/d927395f-d870-4ace-b370-e1e8e4dd5d1c
+https://jukebox-backend-europe.herokuapp.com/artists/b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29
 ```
 
 **Note that this endpoint can also search for an artist by their name.**
@@ -105,7 +105,7 @@ This endpoint returns an artist `Object` from the database if the artist exists.
 {
   "success": true,
   "artist": {
-    "id": "d927395f-d870-4ace-b370-e1e8e4dd5d1c",
+    "id": "b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29",
     "imageUrl": "https://i.scdn.co/image/ab6761610000e5eb85c10aefe83110535eea474c",
     "name": "Zero 7"
   }
@@ -115,7 +115,7 @@ This endpoint returns an artist `Object` from the database if the artist exists.
 ## Get all tracks by a specific artist from /artists/artist/tracks
 
 ```
-https://jukebox-backend-europe.herokuapp.com/artists/d927395f-d870-4ace-b370-e1e8e4dd5d1c/tracks
+https://jukebox-backend-europe.herokuapp.com/artists/b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29/tracks
 ```
 
 **Note that this endpoint can also search for an artist by their name.**
@@ -131,22 +131,22 @@ This endpoint returns an `Array` of all the tracks by a specific artist.
   "success": true,
   "tracks": [
     {
-      "imageUrl": "https://i.scdn.co/image/ab67616d0000b2730f387fd18dfdc5f0c18b80d3",
-      "artist": "d927395f-d870-4ace-b370-e1e8e4dd5d1c",
-      "id": "026e037f-e9b9-4bfd-be19-0104e825f80c",
       "metadata": {
-        "format": "audio/flac",
         "duration": 317.4,
-        "bitrate": 874661.8021424072,
-        "size": 34747744
+        "format": "audio/flac",
+        "size": 34747744,
+        "bitrate": 874661.8021424072
       },
-      "fileUrl": "https://firebasestorage.googleapis.com/v0/b/jukebox-50574.appspot.com/o/61d73e03-840f-4e21-af96-8cbcddfc521b.flac?alt=media&token=026e037f-e9b9-4bfd-be19-0104e825f80c",
-      "album": "Simple Things",
+      "artist": "b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29",
+      "title": "Give It Away",
       "statistics": {
         "downloads": 0,
         "playbacks": 0
       },
-      "title": "Give It Away"
+      "id": "541cdc6d-4a4e-41d7-aa02-0262c731e119",
+      "album": "Simple Things",
+      "imageUrl": "https://i.scdn.co/image/ab67616d0000b2730f387fd18dfdc5f0c18b80d3",
+      "fileUrl": "https://firebasestorage.googleapis.com/v0/b/jukebox-50574.appspot.com/o/98bc1b94-600f-42c6-9070-bea16094f412.flac?alt=media&token=541cdc6d-4a4e-41d7-aa02-0262c731e119"
     }
   ]
 }
@@ -167,22 +167,22 @@ This endpoint returns an `Array` of all the tracks that exist in the database.
   "success": true,
   "tracks": [
     {
-      "album": "Simple Things",
-      "fileUrl": "https://firebasestorage.googleapis.com/v0/b/jukebox-50574.appspot.com/o/61d73e03-840f-4e21-af96-8cbcddfc521b.flac?alt=media&token=026e037f-e9b9-4bfd-be19-0104e825f80c",
-      "imageUrl": "https://i.scdn.co/image/ab67616d0000b2730f387fd18dfdc5f0c18b80d3",
-      "statistics": {
-        "playbacks": 0,
-        "downloads": 0
-      },
+      "id": "541cdc6d-4a4e-41d7-aa02-0262c731e119",
       "title": "Give It Away",
-      "id": "026e037f-e9b9-4bfd-be19-0104e825f80c",
-      "metadata": {
-        "size": 34747744,
-        "duration": 317.4,
-        "bitrate": 874661.8021424072,
-        "format": "audio/flac"
+      "statistics": {
+        "downloads": 0,
+        "playbacks": 0
       },
-      "artist": "d927395f-d870-4ace-b370-e1e8e4dd5d1c"
+      "album": "Simple Things",
+      "artist": "b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29",
+      "imageUrl": "https://i.scdn.co/image/ab67616d0000b2730f387fd18dfdc5f0c18b80d3",
+      "fileUrl": "https://firebasestorage.googleapis.com/v0/b/jukebox-50574.appspot.com/o/98bc1b94-600f-42c6-9070-bea16094f412.flac?alt=media&token=541cdc6d-4a4e-41d7-aa02-0262c731e119",
+      "metadata": {
+        "duration": 317.4,
+        "format": "audio/flac",
+        "bitrate": 874661.8021424072,
+        "size": 34747744
+      }
     }
   ]
 }
@@ -191,7 +191,7 @@ This endpoint returns an `Array` of all the tracks that exist in the database.
 ## Get a specific track from /tracks/track
 
 ```
-https://jukebox-backend-europe.herokuapp.com/tracks/026e037f-e9b9-4bfd-be19-0104e825f80c
+https://jukebox-backend-europe.herokuapp.com/tracks/541cdc6d-4a4e-41d7-aa02-0262c731e119
 ```
 
 **Note that this endpoint can also search for a track by its title.**
@@ -206,22 +206,22 @@ This endpoint returns a track `Object` from the database if the track exists.
 {
   "success": true,
   "track": {
-    "metadata": {
-      "duration": 317.4,
-      "size": 34747744,
-      "format": "audio/flac",
-      "bitrate": 874661.8021424072
-    },
     "title": "Give It Away",
-    "artist": "d927395f-d870-4ace-b370-e1e8e4dd5d1c",
-    "fileUrl": "https://firebasestorage.googleapis.com/v0/b/jukebox-50574.appspot.com/o/61d73e03-840f-4e21-af96-8cbcddfc521b.flac?alt=media&token=026e037f-e9b9-4bfd-be19-0104e825f80c",
-    "id": "026e037f-e9b9-4bfd-be19-0104e825f80c",
-    "imageUrl": "https://i.scdn.co/image/ab67616d0000b2730f387fd18dfdc5f0c18b80d3",
+    "artist": "b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29",
+    "fileUrl": "https://firebasestorage.googleapis.com/v0/b/jukebox-50574.appspot.com/o/98bc1b94-600f-42c6-9070-bea16094f412.flac?alt=media&token=541cdc6d-4a4e-41d7-aa02-0262c731e119",
+    "album": "Simple Things",
     "statistics": {
       "downloads": 0,
       "playbacks": 0
     },
-    "album": "Simple Things"
+    "imageUrl": "https://i.scdn.co/image/ab67616d0000b2730f387fd18dfdc5f0c18b80d3",
+    "id": "541cdc6d-4a4e-41d7-aa02-0262c731e119",
+    "metadata": {
+      "bitrate": 874661.8021424072,
+      "format": "audio/flac",
+      "size": 34747744,
+      "duration": 317.4
+    }
   }
 }
 ```
