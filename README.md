@@ -69,7 +69,7 @@ This application builds upon a Node/Express server that returns JSON data. Note 
 ## Get all artists from /artists
 
 ```
-https://jukebox-backend-europe.herokuapp.com/artists
+https://jukebox-backend-production.up.railway.app/artists
 ```
 
 This endpoint returns an `Array` of all the artists that exist in the database.
@@ -90,13 +90,13 @@ This endpoint returns an `Array` of all the artists that exist in the database.
 ## Get a specific artist from /artists/artist
 
 ```
-https://jukebox-backend-europe.herokuapp.com/artists/d927395f-d870-4ace-b370-e1e8e4dd5d1c
+https://jukebox-backend-production.up.railway.app/artists/b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29
 ```
 
 **Note that this endpoint can also search for an artist by their name.**
 
 ```
-https://jukebox-backend-europe.herokuapp.com/artists/zero 7
+https://jukebox-backend-production.up.railway.app/artists/zero%207
 ```
 
 This endpoint returns an artist `Object` from the database if the artist exists.
@@ -115,13 +115,13 @@ This endpoint returns an artist `Object` from the database if the artist exists.
 ## Get all tracks by a specific artist from /artists/artist/tracks
 
 ```
-https://jukebox-backend-europe.herokuapp.com/artists/d927395f-d870-4ace-b370-e1e8e4dd5d1c/tracks
+https://jukebox-backend-production.up.railway.app/artists/b64a91f7-f8c0-4fcc-ba56-a0b9f19cdb29/tracks
 ```
 
 **Note that this endpoint can also search for an artist by their name.**
 
 ```
-https://jukebox-backend-europe.herokuapp.com/artists/zero 7/tracks
+https://jukebox-backend-production.up.railway.app/artists/zero%207/tracks
 ```
 
 This endpoint returns an `Array` of all the tracks by a specific artist.
@@ -157,7 +157,7 @@ This endpoint returns an `Array` of all the tracks by a specific artist.
 ## Get all tracks from /tracks
 
 ```
-https://jukebox-backend-europe.herokuapp.com/tracks
+https://jukebox-backend-production.up.railway.app/tracks
 ```
 
 This endpoint returns an `Array` of all the tracks that exist in the database.
@@ -191,13 +191,13 @@ This endpoint returns an `Array` of all the tracks that exist in the database.
 ## Get a specific track from /tracks/track
 
 ```
-https://jukebox-backend-europe.herokuapp.com/tracks/026e037f-e9b9-4bfd-be19-0104e825f80c
+https://jukebox-backend-production.up.railway.app/tracks/541cdc6d-4a4e-41d7-aa02-0262c731e119
 ```
 
 **Note that this endpoint can also search for a track by its title.**
 
 ```
-https://jukebox-backend-europe.herokuapp.com/tracks/give it away
+https://jukebox-backend-production.up.railway.app/tracks/give%20it%20away
 ```
 
 This endpoint returns a track `Object` from the database if the track exists.
@@ -231,13 +231,13 @@ This endpoint returns a track `Object` from the database if the track exists.
 ## Get a specific track from /spotify/artists/artist/tracks/track
 
 ```
-https://jukebox-backend-europe.herokuapp.com/spotify/artists/zero 7/tracks/give it away
+https://jukebox-backend-production.up.railway.app/spotify/artists/zero%207/tracks/give%20it%20away
 ```
 
 **Note that an optional query parameter can be appended to narrow down the search to a specific album. This is useful when a track is included in many different albums.**
 
 ```
-https://jukebox-backend-europe.herokuapp.com/spotify/artists/zero 7/tracks/give it away?album=simple things
+https://jukebox-backend-production.up.railway.app/spotify/artists/zero%207/tracks/give%20it%20away?album=simple%20things
 ```
 
 This endpoint returns a track `Object` from the **Spotify Web API** if the track exists.
@@ -262,11 +262,10 @@ This endpoint returns a track `Object` from the **Spotify Web API** if the track
 ## Get a specific artist from /spotify/artists/artist
 
 ```
-https://jukebox-backend-europe.herokuapp.com/spotify/artists/14H7ag1wpQOsPPQJOD6Dqr
+https://jukebox-backend-production.up.railway.app/spotify/artists/14H7ag1wpQOsPPQJOD6Dqr
 ```
 
 This endpoint returns an artist `Object` from the **Spotify Web API** if the artist exists.
-
 
 ```json
 {
